@@ -1,15 +1,197 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Note App</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js" integrity="sha256-/PJBs6QWvXijOFIX04kZpLb6ZtSQckdOIavLWKKOgXU=" crossorigin="anonymous" defer></script>
-  <script src="scripts/index.js" type="module"></script>
-
-  <link rel="stylesheet" href="styles/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ToDo-Liste</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.3/handlebars.min.js"
+            integrity="sha256-/PJBs6QWvXijOFIX04kZpLb6ZtSQckdOIavLWKKOgXU=" crossorigin="anonymous" defer></script>
+    <script src="scripts/index.js" type="module"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="assets/fontawesome/css/all.css" rel="stylesheet">
+    <link href="styles/index.css" rel="stylesheet">
 </head>
 <body>
-<h1>Note App</h1>
+
+<div id="task-app" class="app">
+    <div class="app__inner">
+
+        <div class="app__head">
+            <h1 class="app__headline">ToDo-Liste</h1>
+        </div>
+
+        <div class="app__body">
+
+            <!-- Show Task-List -->
+            <div id="tasklist-wrapper">
+                <div class="app__action-bar app__action-bar--first">
+
+                    <button type="button" id="new-task" class="btn btn--big btn--action action__new">
+                        Neue Aufgabe erstellen <i class="fa fa-solid fa-pen"></i>
+                    </button>
+                    <div class="btn-wrapper">
+                        <button type="button" id="toggle-style" class="btn btn--action action__toggle-style">
+                            Stil wechseln <i class="fa fa-palette"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="app__action-bar app__action-bar--second">
+                    <div class="app__sorting sorting">
+                        <button type="button" class="btn btn--sorting sorting__name">
+                            Name <i class="fa fa-sort-up"></i>
+                        </button>
+                        <button type="button" class="btn btn--sorting sorting__duedate">
+                            Fällig am <i class="fa fa-sort"></i>
+                        </button>
+                        <button type="button" class="btn btn--sorting sorting__crdate">
+                            Erstellt am <i class="fa fa-sort"></i>
+                        </button>
+                        <button type="button" class="btn btn--sorting sorting__importance">
+                            Wichtigkeit <i class="fa fa-sort"></i>
+                        </button>
+                    </div>
+                    <div class="app__filter filter">
+                        <button type="button" class="btn btn--filter filter__completed">
+                            Erledigte Aufgaben <i class="fa fa-filter"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="tasklist" class="tasklist app__list">
+
+                    <div class="tasklist__entry entry" data-uid="1">
+
+                        <div class="entry__countdown">
+                            in 7 Tagen
+                        </div>
+
+                        <div class="entry__status">
+                            <label for="entry-status-1"><input type="checkbox" name="entryStatus" id="entry-status-1"/>
+                                offen </label>
+                        </div>
+
+                        <div class="entry__title">
+                            Aufgaben-Titel Halloooooo
+                        </div>
+
+                        <div class="entry__description">
+                            Bescasdfhreibung<br>
+                            asöldfkjaöslkdfj
+                        </div>
+
+                        <div class="entry__importance" data-importance="1">
+                            <i class="fa fa-bolt-lightning"></i>
+                        </div>
+
+                        <div class="entry__edit">
+                            <button type="button" id="edit-task" class="btn btn--action action__edit"
+                                    title="bearbeiten">
+                                <i class="fa fa-pen"></i>
+                            </button>
+                        </div>
+
+                    </div>
+
+                    <div class="tasklist__entry entry" data-uid="2">
+
+                        <div class="entry__countdown">
+                            in 7 Tagen
+                        </div>
+
+                        <div class="entry__status">
+                            <label for="entry-status-2"><input type="checkbox" name="entryStatus" id="entry-status-2"
+                                                               checked/> erledigt </label>
+                        </div>
+
+                        <div class="entry__title">
+                            Aufgaben-Titel
+                        </div>
+
+                        <div class="entry__description">
+                            Beschreibung
+                        </div>
+
+                        <div class="entry__importance" data-importance="5">
+                            <i class="fa fa-bolt-lightning"></i>
+                            <i class="fa fa-bolt-lightning"></i>
+                            <i class="fa fa-bolt-lightning"></i>
+                            <i class="fa fa-bolt-lightning"></i>
+                            <i class="fa fa-bolt-lightning"></i>
+                        </div>
+
+                        <div class="entry__edit">
+                            <button type="button" class="btn btn--action action__edit" title="bearbeiten">
+                                <i class="fa fa-pen"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Show Form -->
+            <div id="taskform" class="taskform" style="display:none;">
+                <h2 class="taskform__title">Neue Aufgabe erstellen</h2>
+                <form class="taskform__form" action="#" method="post">
+                    <div class="form-row">
+                        <label for="task-title">Titel</label>
+                        <div class="form-row__input">
+                            <input type="text" name="taskTitle" id="task-title" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="task-description">Beschreibung</label>
+                        <div class="form-row__input">
+                            <textarea name="taskDescription" id="task-description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="task-importance-range">Wichtigkeit</label>
+                        <div class="form-row__input task-importance">
+                            <input type="range" name="taskImportanceRange" id="task-importance-range" min="0" max="5"
+                                   step="1" value="0" oninput="this.form.taskImportanceInput.value=this.value">
+                            <input type="number" name="taskImportanceInput" id="task-importance-input" min="0" max="5"
+                                   value="0" oninput="this.form.taskImportanceRange.value=this.value"/>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label for="task-duedate">Fälligkeit</label>
+                        <div class="form-row__input">
+                            <input type="date" name="taskDueDate" id="task-duedate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <label>Status</label>
+                        <div class="form-row__input form-row__input--checkbox">
+                            <label for="task-completed"> <input type="checkbox" name="taskCompleted"
+                                                                id="task-completed"> erledigt </label>
+                        </div>
+                    </div>
+
+                    <div class="form-action-row">
+                        <div class="btn-wrapper">
+                            <button type="button" class="btn btn--action action__update">Aktualisieren <i
+                                    class="fa fa-arrows-rotate"></i></button>
+                            <button type="button" class="btn btn--action action__update-overview">Speichern & zur
+                                Übersicht
+                            </button>
+                            <button type="button" class="btn btn--action action__overview">zur Übersicht <i
+                                    class="fa fa-list"></i></button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div> <!-- </app__body> -->
+    </div> <!-- </app__inner> -->
+</div><!-- </app> -->
 
 </body>
 </html>
