@@ -13,7 +13,6 @@ document.querySelector('#toggle-style').addEventListener('click', styleToggle);
 
 /* Show Task Form */
 function toggleView (viewToShow) {
-    console.log(viewToShow);
     switch (viewToShow) {
         case 'form':
             document.getElementById("taskform").style.display='block';
@@ -31,7 +30,9 @@ function toggleView (viewToShow) {
     }
 
 };
-/*
-document.querySelector('button.action__overview').addEventListener('click', toggleView('list'));
-document.querySelector('button.action__edit, button.action__new').addEventListener('click', toggleView('form'));
-*/
+
+const viewButtons = document.querySelectorAll('button[data-view]');
+
+viewButtons.forEach(el => el.addEventListener('click', event => {
+    toggleView(event.target.getAttribute("data-view"));
+}));

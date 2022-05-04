@@ -28,7 +28,7 @@
             <div id="tasklist-wrapper">
                 <div class="app__action-bar app__action-bar--first">
 
-                    <button type="button" id="new-task" class="btn btn--big btn--action action__new">
+                    <button type="button" id="new-task" class="btn btn--big btn--action action__new" data-view="form">
                         Neue Aufgabe erstellen <i class="fa fa-solid fa-pen"></i>
                     </button>
                     <div class="btn-wrapper">
@@ -178,10 +178,10 @@
                         <div class="btn-wrapper">
                             <button type="button" class="btn btn--action action__update">Aktualisieren <i
                                     class="fa fa-arrows-rotate"></i></button>
-                            <button type="button" class="btn btn--action action__update-overview">Speichern & zur
+                            <button type="button" class="btn btn--action action__update-overview" >Speichern & zur
                                 Übersicht
                             </button>
-                            <button type="button" class="btn btn--action action__overview">zur Übersicht <i
+                            <button type="button" class="btn btn--action action__overview" data-view="list">zur Übersicht <i
                                     class="fa fa-list"></i></button>
                         </div>
                     </div>
