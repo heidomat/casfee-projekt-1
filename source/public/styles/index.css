@@ -4,49 +4,31 @@
 GENERAL
  */
 
-/* Style 1*/
-/*
-blue: #308AD9;
-yellow: #F2C744;
-orange: #D99518;
-red: #D96E48;
-lightbrown: #D9C1B8;
-
-*/
 body {
-  --body-bg-color: #D9C1B8;
-  --body-color: #000;
+  --body-bg-color: #9ea476;
+  --body-color: #46403c;
   --app-bg-color: #fff;
-  --btn-bg-color: #F2C744;
+  --btn-bg-color: #c7a589;
+  --btn-color: #fff;
   --hover-brightness: 0.8;
 
-  --btn-new-bg-color: #308AD9;
+  --btn-new-bg-color: #9ea476;
   --btn-new-color: #fff;
 
-  --btn-togglestyle-bg-color: #D99518;
+  --btn-togglestyle-bg-color: #59524c;
   --btn-togglestyle-color: #fff;
 
-  --input-border-color: #D9C1B8;
+  --input-border-color: #59524c;
 
-  --general-border-color: #000;
+  --general-border-color: #59524c;
 }
-
-/* Style 2 */
-/*
-off-white: #f2f2f2;
-lightgray: #D9D9D9;
-gray: #8C8C8C;
-darkgray: #404040;
-black: #0D0D0D;
-*/
-
 
 body.dark-mode {
   --body-color: #fff;
   --body-bg-color: #0D0D0D;
   --app-bg-color: #404040;
 
-  --btn-bg-color: #D9D9D9;
+  --btn-bg-color: #8C8C8C;
   --hover-brightness: 0.8;
 
   --btn-new-bg-color: #fff;
@@ -142,14 +124,13 @@ h1 {
   margin: 0 0 5px 5px;
 }
 
-
-
 /*
 BUTTONS
  */
 .btn {
   border: none;
   background: var(--btn-bg-color);
+  color: var(--btn-color);
   text-transform: uppercase;
   font-weight: bold;
   font-size: 0.85rem;
@@ -168,6 +149,11 @@ BUTTONS
 
 }
 
+.btn--sorting,
+.btn--filter {
+  font-weight: normal;
+}
+
 .btn--sorting .fa-sort {
   opacity:0.4;
 }
@@ -177,10 +163,13 @@ BUTTONS
   color: var(--btn-togglestyle-color);
 }
 
-.btn.action__new {
+.btn.action__new,
+.btn.action__edit {
   background: var(--btn-new-bg-color);
   color: var(--btn-new-color);
 }
+
+
 
 /*
 Tasklist
