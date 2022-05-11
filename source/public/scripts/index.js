@@ -14,7 +14,7 @@ document.querySelector('#toggle-style').addEventListener('click', styleToggle);
 /* Show Task Form */
 function toggleView(viewToShow) {
     switch (viewToShow) {
-        case 'form':
+        case "form":
             document.getElementById("taskform").style.display = 'block';
             document.getElementById("tasklist-wrapper").style.display = 'none';
             break;

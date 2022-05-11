@@ -4,7 +4,7 @@
 GENERAL
  */
 
-body {
+:root {
   --body-bg-color: #9ea476;
   --body-color: #46403c;
   --app-bg-color: #fff;
@@ -23,7 +23,7 @@ body {
   --general-border-color: #59524c;
 }
 
-body.dark-mode {
+.dark-mode {
   --body-color: #fff;
   --body-bg-color: #0D0D0D;
   --app-bg-color: #404040;
@@ -41,7 +41,6 @@ body.dark-mode {
 
   --general-border-color: #fff;
 }
-
 
 
 * {
