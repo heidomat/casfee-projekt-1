@@ -15,16 +15,16 @@ document.querySelector('#toggle-style').addEventListener('click', styleToggle);
 function toggleView(viewToShow) {
     switch (viewToShow) {
         case "form":
-            document.getElementById("taskform").style.display = 'block';
+            document.getElementById("taskform-wrapper").style.display = 'block';
             document.getElementById("tasklist-wrapper").style.display = 'none';
             break;
         case 'list':
-            document.getElementById("taskform").style.display = 'none';
+            document.getElementById("taskform-wrapper").style.display = 'none';
             document.getElementById("tasklist-wrapper").style.display = 'block';
             break;
 
         default:
-            document.getElementById("taskform").style.display = 'none';
+            document.getElementById("taskform-wrapper").style.display = 'none';
             document.getElementById("tasklist-wrapper").style.display = 'block';
             break;
     }
