@@ -52,19 +52,29 @@ const showImportanceSymbols = (number) => {
     return symbols;
 }
 
+const getStatusText = (status) => {
+    return !status ? 'offen' : 'erledigt'
+}
+
+const getCountdownText = (dueDate) => {
+    const today = new Date().getTime();
+    const remainingDays = Math.ceil(Math.abs(dueDate - today) / (1000 * 60 * 60 * 24));
+
+}
+
 
 const listBuilder = (task) => {
     const taskEntry = document.createElement('div');
-    taskEntry.classList.add('tasklist__entry', 'entry');
+    task.completed ? taskEntry.classList.add('tasklist__entry', 'entry', 'entry--completed') : taskEntry.classList.add('tasklist__entry', 'entry');
     taskEntry.innerHTML = `
                     <div class="entry__status">
                         <input type="checkbox" name="entryStatus" id="entry-status-1"/>
-                        <label for="entry-status-1">${task.completed}</label>
+                        <label for="entry-status-1">${getStatusText(task.completed)}</label>
                     </div>
 
                     <div class="entry__countdown">
                         <i class="fa-regular fa-calendar"></i>
-                        <span class="countdown-text">${task.duedate}</span>
+                        <span class="countdown-text">${getCountdownText(task.duedate)}</span>
                     </div>
 
                     <div class="entry__title">
@@ -101,7 +111,7 @@ function Task(taskTitle, taskDescription, taskImportanceInput, taskDueDate, task
 taskform.addEventListener("submit", (e) => {
     e.preventDefault();
     const formData = taskform.elements;
-    const taskEntry = new Task(formData.taskTitle.value, formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.value, formData.taskCompleted.value);
+    const taskEntry = new Task(formData.taskTitle.value, formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.value, formData.taskCompleted.checked);
     taskStorage.push(taskEntry);
     localStorage.setItem("tasks", JSON.stringify(taskStorage));
     listBuilder(taskEntry);

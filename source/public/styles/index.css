@@ -272,7 +272,7 @@ Tasklist
   }
 }
 
-.entry.completed {
+.entry--completed {
   background: var(--task-bg-color-completed);
 }
 
@@ -339,6 +339,10 @@ Tasklist
     justify-self: end;
     align-self: center;
   }
+}
+
+.entry__importance i {
+  margin-left: 3px;
 }
 
 /*
