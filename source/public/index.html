@@ -59,7 +59,7 @@
             </div>
 
             <div id="tasklist" class="tasklist app__list">
-
+                <!--
                 <div class="tasklist__entry entry" data-uid="1">
 
                     <div class="entry__status">
@@ -129,7 +129,7 @@
                         </button>
                     </div>
 
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -137,7 +137,7 @@
         <div id="taskform-wrapper" style="display:none;">
             <div id="taskform" class="taskform has-bg has-bg--white">
                 <h2 class="taskform__title">Neue Aufgabe erstellen</h2>
-                <form class="taskform__form" action="#" method="post">
+                <form id="taskform-form" class="taskform__form" action="#" method="post">
                     <div class="form-row">
                         <label for="task-title">Titel</label>
                         <div class="form-row__input">
@@ -179,12 +179,12 @@
 
                     <div class="form-action-row">
                         <div class="btn-wrapper">
-                            <button type="button" class="btn btn--action action__update">Aktualisieren <i
+                            <button type="submit" class="btn btn--action action__update">Aktualisieren <i
                                     class="fa fa-arrows-rotate"></i></button>
-                            <button type="button" class="btn btn--action action__update-overview">Speichern & zur
+                            <button type="submit" class="btn btn--action action__update-overview" data-view="list">Speichern & zur
                                 Übersicht
                             </button>
-                            <button type="button" class="btn btn--action action__overview" data-view="list">zur
+                            <button type="reset" class="btn btn--action action__overview" data-view="list">zur
                                 Übersicht <i class="fa fa-list"></i></button>
                         </div>
                     </div>
