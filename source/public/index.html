@@ -26,10 +26,10 @@
         </button>
     </header>
 
-    <main class="app__content content container">
+    <main class="app__content content container" data-view="list">
 
         <!-- Show Task-List -->
-        <div id="tasklist-wrapper">
+        <div class="tasklist-wrapper">
             <div class="app__action-bar app__action-bar--first">
                 <button type="button" id="new-task" class="btn btn--big btn--action action__new" data-view="form">
                     Neue Aufgabe erstellen <i class="fa fa-solid fa-pen"></i>
@@ -38,21 +38,21 @@
 
             <div class="app__action-bar app__action-bar--second">
                 <div class="app__sorting sorting">
-                    <button type="button" class="btn btn--sorting sorting__name">
-                        Name <i class="fa fa-sort-up"></i>
+                    <button type="button" class="btn btn--sorting" data-sort-by="title" data-sort-order="">
+                        Name <i class="fa fa-sort"></i>
                     </button>
-                    <button type="button" class="btn btn--sorting sorting__duedate">
+                    <button type="button" class="btn btn--sorting" data-sort-by="duedate" data-sort-order="">
                         Fällig am <i class="fa fa-sort"></i>
                     </button>
-                    <button type="button" class="btn btn--sorting sorting__crdate">
+                    <button type="button" class="btn btn--sorting" data-sort-by="creationdate" data-sort-order="">
                         Erstellt am <i class="fa fa-sort"></i>
                     </button>
-                    <button type="button" class="btn btn--sorting sorting__importance">
+                    <button type="button" class="btn btn--sorting" data-sort-by="importance" data-sort-order="">
                         Wichtigkeit <i class="fa fa-sort"></i>
                     </button>
                 </div>
                 <div class="app__filter filter">
-                    <button type="button" class="btn btn--filter filter__completed">
+                    <button type="button" class="btn btn--filter" data-filter="completed" data-filter-active="0">
                         Erledigte Aufgaben <i class="fa fa-filter"></i>
                     </button>
                 </div>
@@ -134,7 +134,7 @@
         </div>
 
         <!-- Show Form -->
-        <div id="taskform-wrapper" style="display:none;">
+        <div class="taskform-wrapper">
             <div id="taskform" class="taskform has-bg has-bg--white">
                 <h2 class="taskform__title">Neue Aufgabe erstellen</h2>
                 <form id="taskform-form" class="taskform__form" action="#" method="post">
@@ -165,7 +165,7 @@
                     <div class="form-row">
                         <label for="task-duedate">Fälligkeit</label>
                         <div class="form-row__input">
-                            <input type="date" name="taskDueDate" id="task-duedate" required>
+                            <input type="date" name="taskDueDate" id="task-duedate">
                         </div>
                     </div>
 
@@ -194,6 +194,7 @@
         </div>
 
     </main> <!-- </app__content> -->
+
     <footer class="app__footer footer">
         <div class="container">
             <p>CAS FEE 2022 - Projekt 1 - Heidi Germann</p>

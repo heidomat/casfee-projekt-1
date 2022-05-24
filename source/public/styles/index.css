@@ -126,6 +126,16 @@ p {
   flex: 1;
 }
 
+.app__content[data-view='form'] .tasklist-wrapper,
+.app__content[data-view='list'] .taskform-wrapper {
+  display:none;
+}
+
+.app__content[data-view='form'] .taskform-wrapper,
+.app__content[data-view='list'] .tasklist-wrapper {
+  display:block;
+}
+
 .app__footer {
   background: var(--footer-bg-color);
   color: var(--footer-color);
@@ -200,15 +210,28 @@ BUTTONS
   font-size: 1rem;
 }
 
-.btn--sorting .fa-sort {
+.btn--sorting[data-sort-order=""] .fa-sort {
   opacity: 0.4;
 }
+
+.btn--sorting[data-sort-order="asc"] .fa-sort:before {
+  content: '\f0de';
+}
+
+.btn--sorting[data-sort-order="desc"] .fa-sort:before {
+  content: '\f0dd';
+}
+
 
 .btn--sorting:hover,
 .btn--sorting:focus,
 .btn--filter:hover,
 .btn--filter:focus {
   background: var(--btn-bg-color-hover);
+}
+
+.btn--filter[data-filter-active="1"] .fa-filter:before {
+  content: "\e17b";
 }
 
 .btn--toggle-style {
