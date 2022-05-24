@@ -149,7 +149,7 @@ taskform.addEventListener("submit", (e) => {
     const formData = taskform.elements;
     const creationDateTS = new Date().getTime();
     const dueDateTS = new Date(formData.taskDueDate.value).getTime();
-    const taskEntry = new Task formData.taskTitle.value, formData.taskDescription.value, formData.taskImportanceInput.value, dueDateTS, creationDateTS, formData.taskCompleted.checked);
+    const taskEntry = new Task (formData.taskTitle.value, formData.taskDescription.value, formData.taskImportanceInput.value, dueDateTS, creationDateTS, formData.taskCompleted.checked);
     taskStorage.push(taskEntry);
     localStorage.setItem("tasks", JSON.stringify(taskStorage));
     taskform.reset();
