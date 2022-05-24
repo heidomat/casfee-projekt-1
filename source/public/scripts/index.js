@@ -46,6 +46,10 @@ function getStatusChecked(status) {
     return !status ? '' : 'checked'
 }
 
+function getStatusClass(status) {
+    return !status ? '' : 'entry--completed'
+}
+
 function getCountdownText(dueDate) {
     const today = new Date();
     const tillDate = new Date(dueDate);
@@ -56,7 +60,6 @@ function getCountdownText(dueDate) {
     switch (true) {
         case (remainingDays > 1):
             return `in ${remainingDays} Tagen`
-
 
         case (remainingDays === 1):
             return `in ${remainingDays} Tag`
@@ -73,7 +76,8 @@ function getCountdownText(dueDate) {
 }
 
 function renderDueDate(dueDate) {
-    if (dueDate !== null) {
+
+    if (dueDate !== 0) {
         return `<i class="fa-regular fa-calendar"></i>
         <span class="countdown-text">${getCountdownText(dueDate)}</span>`
     }
@@ -84,10 +88,9 @@ function renderDueDate(dueDate) {
 
 /* Render List */
 
-function listBuilder(task) {
-    const taskEntry = document.createElement('div');
-    task.completed ? taskEntry.classList.add('tasklist__entry', 'entry', 'entry--completed') : taskEntry.classList.add('tasklist__entry', 'entry');
-    taskEntry.innerHTML = `
+function entryBuilder(task) {
+    const taskEntry = `
+            <div class="tasklist__entry entry ${getStatusClass(task.completed)}" data-id="${task.id}">
                     <div class="entry__status">
                         <input type="checkbox" name="entryStatus" id="entry-status-1" disabled ${getStatusChecked(task.completed)} />
                         <label for="entry-status-1">${getStatusText(task.completed)}</label>
@@ -115,46 +118,59 @@ function listBuilder(task) {
                             <i class="fa fa-pen"></i>
                         </button>
                     </div>
+            </div>
     `;
-    tasklist.appendChild(taskEntry);
+    tasklist.insertAdjacentHTML('afterbegin', taskEntry);
 }
 
 function renderList(data) {
     tasklist.innerHTML = '';
     data.forEach((task) => {
-        listBuilder(task);
+        entryBuilder(task);
     });
 }
 
 /* Task Constructor */
-function Task(taskTitle, taskDescription, taskImportanceInput, taskDueDate, taskCreationDate, taskCompleted) {
-    //this.id = taskId,
-    this.title = taskTitle,
-    this.description = taskDescription,
-    this.importance = +(taskImportanceInput),
-    this.duedate = taskDueDate,
-    this.creationdate = taskCreationDate,
-    this.completed = taskCompleted;
+class Task {
+    constructor(taskId, taskTitle, taskDescription = '', taskImportanceInput = 0, taskDueDate = 0, taskCreationDate, taskCompleted = false) {
+        this.id = taskId;
+        this.title = taskTitle;
+        this.description = taskDescription;
+        this.importance = +(taskImportanceInput);
+        this.duedate = taskDueDate;
+        this.creationdate = taskCreationDate;
+        this.completed = taskCompleted;
+    }
 }
 
 const createId = function () {
-
-
+    const newId = ((Math.random() * 10000).toString().slice(0,3)) + (taskStorage.length + 1);
+    if (!taskStorage.find(element => element.id === newId)) {
+        return newId;
+    } else {
+        createId();
+    }
 }
 
 
 /* Create New Task */
 taskform.addEventListener("submit", (e) => {
     e.preventDefault();
+    // get Form Data
     const formData = taskform.elements;
-    const creationDateTS = new Date().getTime();
-    const dueDateTS = new Date(formData.taskDueDate.value).getTime();
-    const taskEntry = new Task (formData.taskTitle.value, formData.taskDescription.value, formData.taskImportanceInput.value, dueDateTS, creationDateTS, formData.taskCompleted.checked);
+    const creationDateTS = new Date().getTime(); // timestamp
+    const dueDateTS = formData.taskDueDate.value ? new Date(formData.taskDueDate.value).getTime() : 0; // timestamp
+    const taskId = formData.taskId.value ? formData.taskId.value : createId();
+    const taskEntry = new Task(taskId, formData.taskTitle.value, formData.taskDescription.value, formData.taskImportanceInput.value, dueDateTS, creationDateTS, formData.taskCompleted.checked);
     taskStorage.push(taskEntry);
     localStorage.setItem("tasks", JSON.stringify(taskStorage));
-    taskform.reset();
-    listBuilder(taskEntry);
-    changeView('list');
+    entryBuilder(taskEntry);
+
+    if (e.submitter.classList.contains('action__update-overview')) {
+        taskform.reset();
+        changeView('list');
+    }
+
 });
 
 
@@ -217,15 +233,15 @@ function filterItemsBy(data, filterBy) {
 
 filterButtons.forEach(el => el.addEventListener('click', event => {
 
-    if ( +(event.target.dataset.filterActive) === 0 ) {
-        event.target.dataset.filterActive = '1';
-        const filteredList = filterItemsBy(taskStorage, event.target.dataset.filter);
-        renderList(filteredList);
+        if (+(event.target.dataset.filterActive) === 0) {
+            event.target.dataset.filterActive = '1';
+            const filteredList = filterItemsBy(taskStorage, event.target.dataset.filter);
+            renderList(filteredList);
 
-    } else {
-        event.target.dataset.filterActive = '0';
-        renderList(taskStorage);
-    }
+        } else {
+            event.target.dataset.filterActive = '0';
+            renderList(taskStorage);
+        }
 
 
     })
