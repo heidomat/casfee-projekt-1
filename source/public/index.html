@@ -31,7 +31,7 @@
         <!-- Show Task-List -->
         <div class="tasklist-wrapper">
             <div class="app__action-bar app__action-bar--first">
-                <button type="button" id="new-task" class="btn btn--big btn--action action__new" data-view="form">
+                <button type="button" id="new-task" class="btn btn--big btn--action action__new" data-view="form" data-action="new">
                     Neue Aufgabe erstellen <i class="fa fa-solid fa-pen"></i>
                 </button>
             </div>
@@ -58,86 +58,15 @@
                 </div>
             </div>
 
-            <div id="tasklist" class="tasklist app__list">
-                <!--
-                <div class="tasklist__entry entry" data-uid="1">
+            <div id="tasklist" class="tasklist app__list"></div>
 
-                    <div class="entry__status">
-                        <input type="checkbox" name="entryStatus" id="entry-status-1"/>
-                        <label for="entry-status-1">offen</label>
-                    </div>
-
-                    <div class="entry__countdown">
-                        <i class="fa-regular fa-calendar"></i>
-                        <span class="countdown-text">in 7 Tagen</span>
-                    </div>
-
-                    <div class="entry__title">
-                        <h3>Aufgaben-Titel Halloooooo</h3>
-                    </div>
-
-                    <div class="entry__description">
-                        <p>Bescasdfhreibung<br>
-                            asöldfkjaöslkdfj</p>
-                    </div>
-
-                    <div class="entry__importance" data-importance="1">
-                        <i class="fa fa-bolt-lightning"></i>
-                    </div>
-
-                    <div class="entry__edit">
-                        <button type="button" id="edit-task" class="btn btn--action action__edit" title="bearbeiten"
-                                data-uid="1">
-                            <i class="fa fa-pen"></i>
-                        </button>
-                    </div>
-
-                </div>
-
-                <div class="tasklist__entry entry entry--completed" data-uid="2">
-
-                    <div class="entry__status">
-                        <input type="checkbox" name="entryStatus" id="entry-status-2" checked/>
-                        <label for="entry-status-2">erledigt</label>
-                    </div>
-
-                    <div class="entry__countdown">
-                        <i class="fa-regular fa-calendar"></i>
-                        <span class="countdown-text">Morgen</span>
-                    </div>
-
-                    <div class="entry__title">
-                        <h3>Aufgaben-Titel</h3>
-                    </div>
-
-                    <div class="entry__description">
-                        <p>Beschreibung</p>
-                        <p>Beschreibung</p>
-                    </div>
-
-                    <div class="entry__importance" data-importance="5">
-                        <i class="fa fa-bolt-lightning"></i>
-                        <i class="fa fa-bolt-lightning"></i>
-                        <i class="fa fa-bolt-lightning"></i>
-                        <i class="fa fa-bolt-lightning"></i>
-                        <i class="fa fa-bolt-lightning"></i>
-                    </div>
-
-                    <div class="entry__edit">
-                        <button type="button" class="btn btn--action action__edit" title="bearbeiten" data-uid="2">
-                            <i class="fa fa-pen"></i>
-                        </button>
-                    </div>
-
-                </div>-->
-            </div>
         </div>
 
         <!-- Show Form -->
-        <div class="taskform-wrapper">
-            <div id="taskform" class="taskform has-bg has-bg--white">
+        <div class="taskform-wrapper has-bg has-bg--white">
+
                 <h2 class="taskform__title">Neue Aufgabe erstellen</h2>
-                <form id="taskform-form" class="taskform__form" action="#" method="post">
+                <form id="taskform" class="taskform" action="#" method="post" data-action="">
                     <input type="hidden" name="taskId" id="task-id" value="">
                     <div class="form-row">
                         <label for="task-title">Titel</label>
@@ -190,10 +119,10 @@
                     </div>
 
                 </form>
-            </div>
+
         </div>
 
-    </main> <!-- </app__content> -->
+    </main> <!-- / app__content -->
 
     <footer class="app__footer footer">
         <div class="container">
@@ -201,7 +130,7 @@
         </div>
     </footer>
 
-</div><!-- </app> -->
+</div><!-- < / app> -->
 
 </body>
 </html>
