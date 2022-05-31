@@ -41,10 +41,10 @@
                     <button type="button" class="btn btn--sorting" data-sort-by="title" data-sort-order="">
                         Name <i class="fa fa-sort"></i>
                     </button>
-                    <button type="button" class="btn btn--sorting" data-sort-by="duedate" data-sort-order="">
+                    <button type="button" class="btn btn--sorting" data-sort-by="dueDate" data-sort-order="">
                         Fällig am <i class="fa fa-sort"></i>
                     </button>
-                    <button type="button" class="btn btn--sorting" data-sort-by="creationdate" data-sort-order="">
+                    <button type="button" class="btn btn--sorting" data-sort-by="creationDate" data-sort-order="">
                         Erstellt am <i class="fa fa-sort"></i>
                     </button>
                     <button type="button" class="btn btn--sorting" data-sort-by="importance" data-sort-order="">
@@ -68,6 +68,7 @@
                 <h2 class="taskform__title">Neue Aufgabe erstellen</h2>
                 <form id="taskform" class="taskform" action="#" method="post" data-action="">
                     <input type="hidden" name="taskId" id="task-id" value="">
+                    <input type="hidden" name="taskCreationDate" id="task-creation-date" value="">
                     <div class="form-row">
                         <label for="task-title">Titel</label>
                         <div class="form-row__input">
@@ -85,10 +86,10 @@
                     <div class="form-row">
                         <label for="task-importance-range">Wichtigkeit</label>
                         <div class="form-row__input task-importance">
-                            <input type="range" name="taskImportanceRange" id="task-importance-range" min="0" max="5"
-                                   step="1" value="0" oninput="this.form.taskImportanceInput.value=this.value">
-                            <input type="number" name="taskImportanceInput" id="task-importance-input" min="0" max="5"
-                                   value="0" oninput="this.form.taskImportanceRange.value=this.value"/>
+                            <input type="range" class="js-range-input" name="taskImportanceRange" id="task-importance-range" min="0" max="5"
+                                   step="1" value="0">
+                            <input type="number" class="js-range-input" name="taskImportanceInput" id="task-importance-input" min="0" max="5"
+                                   value="0" />
                         </div>
                     </div>
 
@@ -109,8 +110,8 @@
 
                     <div class="form-action-row">
                         <div class="btn-wrapper">
-                            <button type="submit" class="btn btn--action action__update">Speichern <i class="fa fa-arrows-rotate"></i></button>
-                            <button type="submit" class="btn btn--action action__update-overview" data-view="list">Speichern & zur
+                            <button type="submit" name="save" class="btn btn--action action__update">Speichern <i class="fa fa-arrows-rotate"></i></button>
+                            <button type="submit" name="save-overview" class="btn btn--action action__update-overview">Speichern & zur
                                 Übersicht
                             </button>
                             <button type="reset" class="btn btn--action action__overview" data-view="list">zur

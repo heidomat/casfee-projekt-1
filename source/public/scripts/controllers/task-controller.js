@@ -1,9 +1,9 @@
 import {taskService} from "../services/task-service.js";
+import {taskRenderService} from "../services/task-render-service.js";
+import {Task} from "../services/task.js";
 
 export class TaskController {
     constructor() {
-        this.taskStorage = taskService.storage.items;
-        this.createNewButton = document.querySelector('#new-task');
         this.viewButtons = document.querySelectorAll('button[data-view]');
         this.appContent = document.querySelector('.app__content[data-view]');
         this.taskform = document.querySelector("#taskform");
@@ -14,10 +14,22 @@ export class TaskController {
         this.bodyHTML = document.body;
     }
 
+    loadTheme () {
+        if (taskService.getCookie('theme') ){
+            this.bodyHTML.classList.add('dark-mode');
+        }
+    }
+
     initEventHandlers() {
+
         /* Style Switch */
         this.styleSwitchBtn.addEventListener('click', () => {
-            this.bodyHTML.classList.toggle('dark-mode')
+            this.bodyHTML.classList.toggle('dark-mode');
+            if (this.bodyHTML.classList.contains('dark-mode')) {
+                taskService.setCookie('theme', 'dark-mode', 60);
+            } else {
+                taskService.deleteCookie('theme');
+            }
         });
 
 
@@ -33,12 +45,14 @@ export class TaskController {
         }));
 
         /* Edit Button */
-        this.tasklist.addEventListener("click", this.tasklistEventHandler.bind(this));
+        this.tasklist.addEventListener("click", (event) => { this.tasklistEventHandler(event)});
+
 
 
         /* Sort List */
         this.sortButtons.forEach(el => el.addEventListener('click', event => {
             event.preventDefault();
+
 
             const sortOrder = event.target.dataset.sortOrder;
 
@@ -55,16 +69,16 @@ export class TaskController {
                     break;
                 case 'desc':
                     event.target.dataset.sortOrder = '';
-                    this.renderList(this.taskStorage);
+                    this.renderList();
                     return;
 
                 default:
                     event.target.dataset.sortOrder = '';
-                    this.renderList(this.taskStorage);
+                    this.renderList();
                     return;
             }
 
-            const sortedList = taskService.sortItemsBy(this.taskStorage, event.target.dataset.sortBy, event.target.dataset.sortOrder);
+            const sortedList = taskService.sortItemsBy(taskService.items, event.target.dataset.sortBy, event.target.dataset.sortOrder);
             this.renderList(sortedList);
         }))
 
@@ -73,24 +87,28 @@ export class TaskController {
 
             if (+(event.target.dataset.filterActive) === 0) {
                 event.target.dataset.filterActive = '1';
-                const filteredList = taskService.filterItemsBy(this.taskStorage, event.target.dataset.filter);
+                const filteredList = taskService.filterItemsBy(taskService.items, event.target.dataset.filter);
                 this.renderList(filteredList);
 
             } else {
                 event.target.dataset.filterActive = '0';
-                this.renderList(this.taskStorage);
+                this.renderList();
             }
 
         }))
 
-
+        /* Submit Form */
         this.taskform.addEventListener("submit", (event) => {
+
             event.preventDefault();
 
-            /* Create New Task */
-
-            /* Edit Task */
-            //taskService.addTask(this.taskform, event);
+            if (this.taskform.dataset.action === 'edit') {
+                /* Edit Task */
+                this.editTask();
+            } else if (this.taskform.dataset.action === 'new') {
+                /* Create New Task */
+                this.createNewTask(event);
+            }
 
 
             if (event.submitter.classList.contains('action__update-overview')) {
@@ -99,35 +117,64 @@ export class TaskController {
 
         });
 
+        /* Range/Input */
+        this.taskform.querySelectorAll('.js-range-input').forEach(el => el.addEventListener('change', event => {
+            if (event.target.nextElementSibling) event.target.nextElementSibling.value = event.target.value;
+            if (event.target.previousElementSibling) event.target.previousElementSibling.value = event.target.value;
+        }));
 
     }
 
     tasklistEventHandler (event) {
-
         /* Click Edit Button => getTaskById  */
         if (event.target.closest('button').dataset.action === 'edit') {
             const taskId = event.target.closest('button').dataset.id;
             this.changeView('form');
-            this.taskform.querySelector('input#task-id').value = taskId;
             this.taskform.dataset.action = 'edit';
-            const taskData = taskService.getTaskById(taskId);
-            this.loadEditForm(taskData);
+            this.loadEditForm(taskService.getTaskById(taskId));
         }
     }
 
     loadEditForm(data) {
         // fill data of existing task in form
         const formData = this.taskform.elements;
-        for(let [name, value] of formData) {
-            alert(`${name} = ${value}`); // key1 = value1, then key2 = value2
+        formData.taskId.value = data.id;
+        formData.taskCreationDate.value = data.creationDate;
+        formData.taskTitle.value = data.title;
+        formData.taskDescription.value = data.description;
+        formData.taskImportanceRange.value = data.importance;
+        formData.taskImportanceInput.value = data.importance;
+        if(data.dueDate) formData.taskDueDate.value = new Date(data.dueDate).toISOString().slice(0, 10);
+        formData.taskCompleted.checked = data.completed;
+    }
+
+    createNewTask (event) {
+        const formData = this.taskform.elements;
+        const creationDateTS = new Date().getTime(); // timestamp
+        const taskId = formData.taskId.value ? formData.taskId.value : taskService.createId();
+        const taskEntry = new Task(taskId, formData.taskTitle.value, creationDateTS, formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.valueAsNumber, formData.taskCompleted.checked);
+        taskService.addTask(taskEntry);
+        this.entryBuilder(taskEntry);
+
+        if (event.submitter.classList.contains('action__update')) {
+            formData.taskId.value = taskId;
+            formData.taskCreationDate.value = creationDateTS;
+            this.taskform.dataset.action = 'edit';
         }
+
+    }
+
+    editTask() {
+        const formData = this.taskform.elements;
+        const taskEntry = new Task(formData.taskId.value, formData.taskTitle.value, +(formData.taskCreationDate.value), formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.valueAsNumber, formData.taskCompleted.checked);
+        taskService.updateTask(taskEntry);
+        this.renderList();
     }
 
     renderDueDate(dueDate) {
-
         if (dueDate !== 0) {
             return `<i class="fa-regular fa-calendar"></i>
-            <span class="countdown-text">${taskService.getCountdownText(dueDate)}</span>`
+            <span class="countdown-text">${taskRenderService.getCountdownText(dueDate)}</span>`
         }
 
         return ``
@@ -136,14 +183,14 @@ export class TaskController {
 
     entryBuilder(task) {
         const taskEntry = `
-            <div class="tasklist__entry entry ${taskService.getStatus(task.completed, 'cssClass')}" data-id="${task.id}">
+            <div class="tasklist__entry entry ${taskRenderService.getStatus(task.completed, 'cssClass')}" data-id="${task.id}">
                     <div class="entry__status">
-                        <input type="checkbox" name="entryStatus" id="entry-status-1" disabled ${taskService.getStatus(task.completed, 'checkbox')} />
-                        <label for="entry-status-1">${taskService.getStatus(task.completed, 'text')}</label>
+                        <input type="checkbox" name="entryStatus" id="entry-status-1" disabled ${taskRenderService.getStatus(task.completed, 'checkbox')} />
+                        <label for="entry-status-1">${taskRenderService.getStatus(task.completed, 'text')}</label>
                     </div>
 
                     <div class="entry__countdown">
-                        ${this.renderDueDate(task.duedate)}
+                        ${this.renderDueDate(task.dueDate)}
                     </div>
 
                     <div class="entry__title">
@@ -151,11 +198,11 @@ export class TaskController {
                     </div>
 
                     <div class="entry__description">
-                        ${task.description}
+                        ${taskRenderService.truncateString(task.description, 100)}
                     </div>
 
                     <div class="entry__importance" data-importance="${task.importance}">
-                        ${taskService.showImportanceSymbols(task.importance, '<i class="fa fa-bolt-lightning"></i>')}
+                        ${taskRenderService.showImportanceSymbols(task.importance, '<i class="fa fa-bolt-lightning"></i>')}
                     </div>
 
                     <div class="entry__edit">
@@ -170,9 +217,10 @@ export class TaskController {
     }
 
 
-    renderList(data) {
+    renderList(data = taskService.items) {
+        const items = data || [];
         this.tasklist.innerHTML = '';
-        data.forEach((task) => {
+        items.forEach((task) => {
             this.entryBuilder(task);
         });
     }
@@ -190,8 +238,10 @@ export class TaskController {
 
 
     initialize() {
-        this.renderList(this.taskStorage);
+        this.loadTheme();
         this.initEventHandlers();
+        taskService.loadData();
+        this.renderList();
     }
 
 

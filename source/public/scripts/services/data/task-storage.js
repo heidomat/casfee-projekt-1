@@ -1,6 +1,6 @@
 export class TaskStorage {
     constructor() {
-        const items = JSON.parse(localStorage.getItem('tasks') || "[ ]");
+        const items = JSON.parse(localStorage.getItem('tasks')) || [];
         this.items = items;
         localStorage.setItem('tasks', JSON.stringify(items));
     }
@@ -9,9 +9,11 @@ export class TaskStorage {
         return this.items;
     }
 
-    update(item) {
-        localStorage.setItem('tasks', JSON.stringify(this.items));
+    update(items) {
+        localStorage.setItem('tasks', JSON.stringify(items));
         return this.items;
     }
+
+
 
 }
