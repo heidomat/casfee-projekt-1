@@ -1,5 +1,4 @@
 import {taskService} from "../services/task-service.js";
-import {taskRenderService} from "../services/task-render-service.js";
 import {Task} from "../services/task.js";
 
 export class TaskController {
@@ -12,6 +11,45 @@ export class TaskController {
         this.filterButtons = document.querySelectorAll('button[data-filter]');
         this.styleSwitchBtn = document.querySelector('#toggle-style');
         this.bodyHTML = document.body;
+        this.taskListTemplateCompiled = Handlebars.compile(document.getElementById('tasklist-template').innerHTML);
+
+        Handlebars.registerHelper('truncString', function(string) {
+            const points = string.length > 150 ? '...' : '';
+            const truncateString = string.substring(0,150) + points;
+            return new Handlebars.SafeString(truncateString)
+        });
+
+        Handlebars.registerHelper('showImportanceSymbol', function(number, iconHtml) {
+            let symbols = ``;
+            for (let i = 0; i < number; i++) {
+                symbols += iconHtml
+            }
+            return new Handlebars.SafeString(symbols);
+        });
+
+        Handlebars.registerHelper('remainingDays', function(dueDate) {
+            const today = new Date();
+            const remainingTimestamp = dueDate - today.getTime();
+            const remainingDays = Math.ceil(remainingTimestamp / (1000 * 60 * 60 * 24));
+
+            switch (true) {
+                case (remainingDays > 1):
+                    return `in ${remainingDays} Tagen`
+
+                case (remainingDays === 1):
+                    return `in ${remainingDays} Tag`
+
+                case (remainingDays === -1):
+                    return `vor ${Math.abs(remainingDays)} Tag`
+
+                case (remainingDays < -1):
+                    return `vor ${Math.abs(remainingDays)} Tagen`
+
+                default:
+                    return `heute`
+            }
+        });
+
     }
 
     loadTheme () {
@@ -154,7 +192,7 @@ export class TaskController {
         const taskId = formData.taskId.value ? formData.taskId.value : taskService.createId();
         const taskEntry = new Task(taskId, formData.taskTitle.value, creationDateTS, formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.valueAsNumber, formData.taskCompleted.checked);
         taskService.addTask(taskEntry);
-        this.entryBuilder(taskEntry);
+        this.renderList();
 
         if (event.submitter.classList.contains('action__update')) {
             formData.taskId.value = taskId;
@@ -171,58 +209,9 @@ export class TaskController {
         this.renderList();
     }
 
-    renderDueDate(dueDate) {
-        if (dueDate !== 0) {
-            return `<i class="fa-regular fa-calendar"></i>
-            <span class="countdown-text">${taskRenderService.getCountdownText(dueDate)}</span>`
-        }
-
-        return ``
-
-    }
-
-    entryBuilder(task) {
-        const taskEntry = `
-            <div class="tasklist__entry entry ${taskRenderService.getStatus(task.completed, 'cssClass')}" data-id="${task.id}">
-                    <div class="entry__status">
-                        <input type="checkbox" name="entryStatus" id="entry-status-1" disabled ${taskRenderService.getStatus(task.completed, 'checkbox')} />
-                        <label for="entry-status-1">${taskRenderService.getStatus(task.completed, 'text')}</label>
-                    </div>
-
-                    <div class="entry__countdown">
-                        ${this.renderDueDate(task.dueDate)}
-                    </div>
-
-                    <div class="entry__title">
-                        <h3>${task.title}</h3>
-                    </div>
-
-                    <div class="entry__description">
-                        ${taskRenderService.truncateString(task.description, 100)}
-                    </div>
-
-                    <div class="entry__importance" data-importance="${task.importance}">
-                        ${taskRenderService.showImportanceSymbols(task.importance, '<i class="fa fa-bolt-lightning"></i>')}
-                    </div>
-
-                    <div class="entry__edit">
-                        <button type="button" class="edit-task btn btn--action action__edit" title="bearbeiten"
-                                data-id="${task.id}" data-action="edit">
-                            <i class="fa fa-pen"></i>
-                        </button>
-                    </div>
-            </div>
-    `;
-        this.tasklist.insertAdjacentHTML('afterbegin', taskEntry);
-    }
-
 
     renderList(data = taskService.items) {
-        const items = data || [];
-        this.tasklist.innerHTML = '';
-        items.forEach((task) => {
-            this.entryBuilder(task);
-        });
+        this.tasklist.innerHTML = this.taskListTemplateCompiled(data);
     }
 
     clearForm () {
@@ -242,6 +231,7 @@ export class TaskController {
         this.initEventHandlers();
         taskService.loadData();
         this.renderList();
+
     }
 
 

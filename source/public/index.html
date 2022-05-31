@@ -13,6 +13,44 @@
     <link href="assets/fontawesome/css/all.css" rel="stylesheet">
     <link href="styles/normalize.css" rel="stylesheet">
     <link href="styles/index.css" rel="stylesheet">
+
+    <script id="tasklist-template" type="text/x-handlebars-template">
+        {{#each this}}
+            <div class="tasklist__entry entry{{#if completed}} entry--completed{{/if}}" data-id="{{id}}">
+                <div class="entry__status">
+                    <input type="checkbox" name="entryStatus" id="entry-status-1" disabled{{#if completed}} checked{{/if}} />
+                    <label for="entry-status-1">{{#if completed}}erledigt{{else}}offen{{/if}}</label>
+                </div>
+
+                <div class="entry__countdown">
+                    {{#if dueDate}}
+                        <i class="fa-regular fa-calendar"></i>
+                        <span class="countdown-text">{{{remainingDays dueDate}}}</span>
+                    {{/if}}
+                </div>
+
+                <div class="entry__title">
+                    <h3>{{title}}</h3>
+                </div>
+
+                <div class="entry__description">
+                    {{{truncString description}}}
+                </div>
+
+                <div class="entry__importance" data-importance="{{importance}}">
+                    {{showImportanceSymbol importance '<i class="fa fa-bolt-lightning"></i>'}}
+                </div>
+
+                <div class="entry__edit">
+                    <button type="button" class="edit-task btn btn--action action__edit" title="bearbeiten"
+                            data-id="{{id}}" data-action="edit">
+                        <i class="fa fa-pen"></i>
+                    </button>
+                </div>
+            </div>
+        {{/each}}
+
+    </script>
 </head>
 <body>
 
@@ -28,7 +66,7 @@
 
     <main class="app__content content container" data-view="list">
 
-        <!-- Show Task-List -->
+
         <div class="tasklist-wrapper">
             <div class="app__action-bar app__action-bar--first">
                 <button type="button" id="new-task" class="btn btn--big btn--action action__new" data-view="form" data-action="new">
@@ -62,7 +100,7 @@
 
         </div>
 
-        <!-- Show Form -->
+
         <div class="taskform-wrapper has-bg has-bg--white">
 
                 <h2 class="taskform__title">Neue Aufgabe erstellen</h2>
