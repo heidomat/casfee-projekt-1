@@ -12,14 +12,17 @@ export class TaskController {
         this.styleSwitchBtn = document.querySelector('#toggle-style');
         this.bodyHTML = document.body;
         this.taskListTemplateCompiled = Handlebars.compile(document.getElementById('tasklist-template').innerHTML);
+    }
 
-        Handlebars.registerHelper('truncString', function(string) {
+    handlebarHelpersInit() {
+
+        Handlebars.registerHelper('truncString', function (string) {
             const points = string.length > 150 ? '...' : '';
-            const truncateString = string.substring(0,150) + points;
+            const truncateString = string.substring(0, 150) + points;
             return new Handlebars.SafeString(truncateString)
         });
 
-        Handlebars.registerHelper('showImportanceSymbol', function(number, iconHtml) {
+        Handlebars.registerHelper('showImportanceSymbol', function (number, iconHtml) {
             let symbols = ``;
             for (let i = 0; i < number; i++) {
                 symbols += iconHtml
@@ -27,7 +30,7 @@ export class TaskController {
             return new Handlebars.SafeString(symbols);
         });
 
-        Handlebars.registerHelper('remainingDays', function(dueDate) {
+        Handlebars.registerHelper('remainingDays', function (dueDate) {
             const today = new Date();
             const remainingTimestamp = dueDate - today.getTime();
             const remainingDays = Math.ceil(remainingTimestamp / (1000 * 60 * 60 * 24));
@@ -49,11 +52,10 @@ export class TaskController {
                     return `heute`
             }
         });
-
     }
 
-    loadTheme () {
-        if (taskService.getCookie('theme') ){
+    loadTheme() {
+        if (taskService.getCookie('theme')) {
             this.bodyHTML.classList.add('dark-mode');
         }
     }
@@ -83,8 +85,9 @@ export class TaskController {
         }));
 
         /* Edit Button */
-        this.tasklist.addEventListener("click", (event) => { this.tasklistEventHandler(event)});
-
+        this.tasklist.addEventListener("click", (event) => {
+            this.tasklistEventHandler(event)
+        });
 
 
         /* Sort List */
@@ -163,7 +166,7 @@ export class TaskController {
 
     }
 
-    tasklistEventHandler (event) {
+    tasklistEventHandler(event) {
         /* Click Edit Button => getTaskById  */
         if (event.target.closest('button').dataset.action === 'edit') {
             const taskId = event.target.closest('button').dataset.id;
@@ -182,11 +185,11 @@ export class TaskController {
         formData.taskDescription.value = data.description;
         formData.taskImportanceRange.value = data.importance;
         formData.taskImportanceInput.value = data.importance;
-        if(data.dueDate) formData.taskDueDate.value = new Date(data.dueDate).toISOString().slice(0, 10);
+        if (data.dueDate) formData.taskDueDate.value = new Date(data.dueDate).toISOString().slice(0, 10);
         formData.taskCompleted.checked = data.completed;
     }
 
-    createNewTask (event) {
+    createNewTask(event) {
         const formData = this.taskform.elements;
         const creationDateTS = new Date().getTime(); // timestamp
         const taskId = formData.taskId.value ? formData.taskId.value : taskService.createId();
@@ -214,7 +217,7 @@ export class TaskController {
         this.tasklist.innerHTML = this.taskListTemplateCompiled(data);
     }
 
-    clearForm () {
+    clearForm() {
         this.taskform.reset();
         this.taskform.dataset.action = '';
         this.taskform.querySelector('input#task-id').value = '';
@@ -225,13 +228,12 @@ export class TaskController {
         this.clearForm();
     }
 
-
     initialize() {
         this.loadTheme();
+        this.handlebarHelpersInit();
         this.initEventHandlers();
         taskService.loadData();
         this.renderList();
-
     }
 
 
