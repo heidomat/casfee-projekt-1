@@ -5,7 +5,7 @@ export class TaskService {
     constructor(storage) {
         this.storage = storage || new TaskStorage();
         this.items = [];
-        this.sortType  = {
+        this.sortType = {
             'number': {
                 'asc': (a, b) => a - b,
                 'desc': (a, b) => b - a
@@ -17,7 +17,7 @@ export class TaskService {
         }
     }
 
-    loadData () {
+    loadData() {
         this.items = this.storage.getAll().map(item => new Task(item.id, item.title, item.creationDate, item.description, item.importance, item.dueDate, item.completed));
     }
 
@@ -25,7 +25,7 @@ export class TaskService {
         this.storage.update(this.items.map(item => item.toJSON()));
     }
 
-    addTask (task) {
+    addTask(task) {
         this.items.push(task);
         this.save();
     }
@@ -36,38 +36,42 @@ export class TaskService {
         this.save();
     }
 
-    getTaskById(id)   {
+    getTaskById(id) {
         return this.items.find(el => el.id === id);
     }
 
-    sortItemsBy(data, sortBy, sortOrder) {
-        const sortFn = this.sortType[typeof (data[0][sortBy])][sortOrder];
-        return [...data].sort((a, b) => sortFn(a[sortBy], b[sortBy]));
+    getNote(sortBy, sortOrder, filterBy) {
+
+        const sortFn = this.sortType[typeof (this.items[0][sortBy])][sortOrder];
+        const sortedList =  [...this.items].sort((a, b) => sortFn(a[sortBy], b[sortBy]));
+
+        if (!filterBy) {
+            return sortedList;
+        } else {
+            return sortedList.filter(elem => elem[filterBy] === false);
+        }
     }
 
-    filterItemsBy(data, filterBy) {
-        return data.filter(elem => elem[filterBy] === false);
-    }
 
-    createId () {
-        const itemLength  = this.items.length ? this.items.length : 0;
-        const newId = (Math.floor(Math.random() * 100000).toString().slice(0,3)) + (itemLength + 1);
-        if (this.items.find(el => el.id === newId) ) this.createId();
+    createId() {
+        const itemLength = this.items.length ? this.items.length : 0;
+        const newId = (Math.floor(Math.random() * 100000).toString().slice(0, 3)) + (itemLength + 1);
+        if (this.items.find(el => el.id === newId)) this.createId();
         return newId;
     }
 
-    setCookie (cookieName, cookieValue, expiration) {
+    setCookie(cookieName, cookieValue, expiration) {
         const today = new Date();
-        today.setTime(today.getTime() + (expiration*24*60*60*1000));
-        const expires = `expires=${today.toUTCString()}` ;
+        today.setTime(today.getTime() + (expiration * 24 * 60 * 60 * 1000));
+        const expires = `expires=${today.toUTCString()}`;
         document.cookie = `${cookieName}=${cookieValue};${expires};path=/`;
     }
 
-    getCookie (cookieName) {
+    getCookie(cookieName) {
         const name = `${cookieName}=`;
         const decodedCookie = decodeURIComponent(document.cookie);
         const ca = decodedCookie.split(';');
-        for(let i = 0; i <ca.length; i++) {
+        for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
             while (c.charAt(0) === ' ') {
                 c = c.substring(1);
@@ -79,7 +83,7 @@ export class TaskService {
         return "";
     }
 
-    deleteCookie (cookieName) {
+    deleteCookie(cookieName) {
         document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     }
 

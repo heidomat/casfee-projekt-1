@@ -18,6 +18,7 @@ GENERAL
   --btn-togglestyle-bg-color-hover: rgba(100, 105, 41, 0.71);
   --btn-togglestyle-color: #fff;
   --input-border-color: #59524c;
+  --invalid-input-border-color: #c90b0b;
   --input-bg-color: #fff;
   --input-color: #46403c;
   --input-accent-color: #646929;
@@ -43,6 +44,7 @@ GENERAL
   --btn-togglestyle-bg-color-hover: rgba(64, 64, 64, 0.71);
   --btn-togglestyle-color: #fff;
   --input-border-color: rgba(255, 255, 255, .2);
+  --invalid-input-border-color: #c90b0b;
   --input-bg-color: rgba(255, 255, 255, .2);
   --input-color: #fff;
   --input-accent-color: #5786c0;
@@ -406,6 +408,10 @@ FORM
   background: var(--input-bg-color);
   color: var(--input-color);
   border: 1px solid var(--input-border-color);
+}
+
+.taskform input:not([type="checkbox"],[type="radio"]):invalid {
+  border: 2px solid var(--invalid-input-border-color);
 }
 
 .taskform textarea {

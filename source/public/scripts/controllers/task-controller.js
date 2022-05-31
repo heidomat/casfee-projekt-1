@@ -4,25 +4,34 @@ import {Task} from "../services/task.js";
 export class TaskController {
     constructor() {
         this.viewButtons = document.querySelectorAll('button[data-view]');
+        this.sortButtons = document.querySelectorAll('button[data-sort-by]');
+        this.filterButtons = document.querySelectorAll('button[data-filter]');
         this.appContent = document.querySelector('.app__content[data-view]');
         this.taskform = document.querySelector("#taskform");
         this.tasklist = document.querySelector("#tasklist");
-        this.sortButtons = document.querySelectorAll('button[data-sort-by]');
-        this.filterButtons = document.querySelectorAll('button[data-filter]');
         this.styleSwitchBtn = document.querySelector('#toggle-style');
         this.bodyHTML = document.body;
+
+        this.sortByDefaults = 'creationDate';
+        this.sortOrderDefaults = 'asc';
+        this.filterByDefaults = '';
+
+        this.sortBy = this.sortByDefaults;
+        this.sortOrder = this.sortOrderDefaults;
+        this.filterBy = this.filterByDefaults;
+
         this.taskListTemplateCompiled = Handlebars.compile(document.getElementById('tasklist-template').innerHTML);
     }
 
-    handlebarHelpersInit() {
+    initHandlebarHelpers() {
 
-        Handlebars.registerHelper('truncString', function (string) {
+        Handlebars.registerHelper('truncString', (string) => {
             const points = string.length > 150 ? '...' : '';
             const truncateString = string.substring(0, 150) + points;
             return new Handlebars.SafeString(truncateString)
         });
 
-        Handlebars.registerHelper('showImportanceSymbol', function (number, iconHtml) {
+        Handlebars.registerHelper('showImportanceSymbol', (number, iconHtml) => {
             let symbols = ``;
             for (let i = 0; i < number; i++) {
                 symbols += iconHtml
@@ -30,7 +39,7 @@ export class TaskController {
             return new Handlebars.SafeString(symbols);
         });
 
-        Handlebars.registerHelper('remainingDays', function (dueDate) {
+        Handlebars.registerHelper('remainingDays',  (dueDate) => {
             const today = new Date();
             const remainingTimestamp = dueDate - today.getTime();
             const remainingDays = Math.ceil(remainingTimestamp / (1000 * 60 * 60 * 24));
@@ -86,7 +95,13 @@ export class TaskController {
 
         /* Edit Button */
         this.tasklist.addEventListener("click", (event) => {
-            this.tasklistEventHandler(event)
+            const editButton = event.target.closest('button[data-action="edit"]');
+            if (editButton) {
+                const taskId = editButton.dataset.id;
+                this.changeView('form');
+                this.taskform.dataset.action = 'edit';
+                this.loadEditForm(taskService.getTaskById(taskId));
+            }
         });
 
 
@@ -94,8 +109,9 @@ export class TaskController {
         this.sortButtons.forEach(el => el.addEventListener('click', event => {
             event.preventDefault();
 
+            const sortButton = event.target.closest('button');
+            const sortOrder = sortButton.dataset.sortOrder;
 
-            const sortOrder = event.target.dataset.sortOrder;
 
             this.sortButtons.forEach(element => {
                 element.dataset.sortOrder = '';
@@ -103,24 +119,26 @@ export class TaskController {
 
             switch (sortOrder) {
                 case '':
-                    event.target.dataset.sortOrder = 'asc';
+                    sortButton.dataset.sortOrder = 'asc';
+                    this.sortBy = sortButton.dataset.sortBy;
+                    this.sortOrder = 'asc';
+                    this.renderList();
+
                     break;
                 case 'asc':
-                    event.target.dataset.sortOrder = 'desc';
-                    break;
-                case 'desc':
-                    event.target.dataset.sortOrder = '';
+                    sortButton.dataset.sortOrder = 'desc';
+                    this.sortBy = sortButton.dataset.sortBy;
+                    this.sortOrder = 'desc';
                     this.renderList();
-                    return;
+                    break;
 
                 default:
-                    event.target.dataset.sortOrder = '';
+                    this.sortBy = this.sortByDefaults;
+                    this.sortOrder = this.sortOrderDefaults;
                     this.renderList();
-                    return;
+                    event.target.dataset.sortOrder = '';
+                    break;
             }
-
-            const sortedList = taskService.sortItemsBy(taskService.items, event.target.dataset.sortBy, event.target.dataset.sortOrder);
-            this.renderList(sortedList);
         }))
 
         /* Filter List */
@@ -128,11 +146,11 @@ export class TaskController {
 
             if (+(event.target.dataset.filterActive) === 0) {
                 event.target.dataset.filterActive = '1';
-                const filteredList = taskService.filterItemsBy(taskService.items, event.target.dataset.filter);
-                this.renderList(filteredList);
-
+                this.filterBy = event.target.dataset.filter;
+                this.renderList();
             } else {
                 event.target.dataset.filterActive = '0';
+                this.filterBy = '';
                 this.renderList();
             }
 
@@ -144,17 +162,15 @@ export class TaskController {
             event.preventDefault();
 
             if (this.taskform.dataset.action === 'edit') {
-                /* Edit Task */
                 this.editTask();
             } else if (this.taskform.dataset.action === 'new') {
-                /* Create New Task */
                 this.createNewTask(event);
             }
-
 
             if (event.submitter.classList.contains('action__update-overview')) {
                 this.changeView('list');
             }
+
 
         });
 
@@ -166,15 +182,6 @@ export class TaskController {
 
     }
 
-    tasklistEventHandler(event) {
-        /* Click Edit Button => getTaskById  */
-        if (event.target.closest('button').dataset.action === 'edit') {
-            const taskId = event.target.closest('button').dataset.id;
-            this.changeView('form');
-            this.taskform.dataset.action = 'edit';
-            this.loadEditForm(taskService.getTaskById(taskId));
-        }
-    }
 
     loadEditForm(data) {
         // fill data of existing task in form
@@ -213,7 +220,8 @@ export class TaskController {
     }
 
 
-    renderList(data = taskService.items) {
+    renderList() {
+        const data = taskService.getNote(this.sortBy, this.sortOrder, this.filterBy);
         this.tasklist.innerHTML = this.taskListTemplateCompiled(data);
     }
 
@@ -229,10 +237,10 @@ export class TaskController {
     }
 
     initialize() {
-        this.loadTheme();
-        this.handlebarHelpersInit();
-        this.initEventHandlers();
         taskService.loadData();
+        this.loadTheme();
+        this.initHandlebarHelpers();
+        this.initEventHandlers();
         this.renderList();
     }
 
