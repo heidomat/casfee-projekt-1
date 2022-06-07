@@ -3,102 +3,102 @@ GENERAL
  */
 
 :root {
-  --body-bg-color: #9ea476;
-  --content-bg-color: #fff;
-  --content-color: #46403c;
-  --task-bg-color: #fff;
-  --task-bg-color-completed: rgba(255, 255, 255, .7);
-  --btn-bg-color: rgba(255, 255, 255, .3);
-  --btn-bg-color-hover: rgba(255, 255, 255, .5);
-  --btn-color: #fff;
-  --btn-new-bg-color: #46403c;
-  --btn-new-bg-color-hover: #2d2a27;
-  --btn-new-color: #fff;
-  --btn-togglestyle-bg-color: #646929;
-  --btn-togglestyle-bg-color-hover: rgba(100, 105, 41, 0.71);
-  --btn-togglestyle-color: #fff;
-  --input-border-color: #59524c;
-  --invalid-input-border-color: #c90b0b;
-  --input-bg-color: #fff;
-  --input-color: #46403c;
-  --input-accent-color: #646929;
-  --h1-color: #fff;
-  --general-border-radius: 3px;
-  --footer-color: #fff;
-  --footer-bg-color: rgba(0, 0, 0, .1);
+    --body-bg-color: #9ea476;
+    --content-bg-color: #fff;
+    --content-color: #46403c;
+    --task-bg-color: #fff;
+    --task-bg-color-completed: rgba(255, 255, 255, .7);
+    --btn-bg-color: rgba(255, 255, 255, .3);
+    --btn-bg-color-hover: rgba(255, 255, 255, .5);
+    --btn-color: #fff;
+    --btn-new-bg-color: #46403c;
+    --btn-new-bg-color-hover: #2d2a27;
+    --btn-new-color: #fff;
+    --btn-togglestyle-bg-color: #646929;
+    --btn-togglestyle-bg-color-hover: rgba(100, 105, 41, 0.71);
+    --btn-togglestyle-color: #fff;
+    --input-border-color: #59524c;
+    --invalid-input-border-color: #c90b0b;
+    --input-bg-color: #fff;
+    --input-color: #46403c;
+    --input-accent-color: #646929;
+    --h1-color: #fff;
+    --general-border-radius: 3px;
+    --footer-color: #fff;
+    --footer-bg-color: rgba(0, 0, 0, .1);
 }
 
 .dark-mode {
-  --body-bg-color: #0d0d0d;
-  --content-bg-color: rgba(255, 255, 255, .2);
-  --content-color: #fff;
-  --task-bg-color: rgba(255, 255, 255, .2);
-  --task-bg-color-completed: rgba(255, 255, 255, .1);
-  --btn-bg-color: rgba(255, 255, 255, .4);
-  --btn-bg-color-hover: rgba(255, 255, 255, .6);
-  --btn-color: #fff;
-  --btn-new-bg-color: #5786c0;
-  --btn-new-bg-color-hover: #3a6396;
-  --btn-new-color: #fff;
-  --btn-togglestyle-bg-color: #404040;
-  --btn-togglestyle-bg-color-hover: rgba(64, 64, 64, 0.71);
-  --btn-togglestyle-color: #fff;
-  --input-border-color: rgba(255, 255, 255, .2);
-  --invalid-input-border-color: #c90b0b;
-  --input-bg-color: rgba(255, 255, 255, .2);
-  --input-color: #fff;
-  --input-accent-color: #5786c0;
-  --h1-color: #fff;
-  --general-border-radius: 3px;
-  --footer-color: #fff;
-  --footer-bg-color: rgba(255, 255, 255, .1);
+    --body-bg-color: #0d0d0d;
+    --content-bg-color: rgba(255, 255, 255, .2);
+    --content-color: #fff;
+    --task-bg-color: rgba(255, 255, 255, .2);
+    --task-bg-color-completed: rgba(255, 255, 255, .1);
+    --btn-bg-color: rgba(255, 255, 255, .4);
+    --btn-bg-color-hover: rgba(255, 255, 255, .6);
+    --btn-color: #fff;
+    --btn-new-bg-color: #5786c0;
+    --btn-new-bg-color-hover: #3a6396;
+    --btn-new-color: #fff;
+    --btn-togglestyle-bg-color: #404040;
+    --btn-togglestyle-bg-color-hover: rgba(64, 64, 64, 0.71);
+    --btn-togglestyle-color: #fff;
+    --input-border-color: rgba(255, 255, 255, .2);
+    --invalid-input-border-color: #c90b0b;
+    --input-bg-color: rgba(255, 255, 255, .2);
+    --input-color: #fff;
+    --input-accent-color: #5786c0;
+    --h1-color: #fff;
+    --general-border-radius: 3px;
+    --footer-color: #fff;
+    --footer-bg-color: rgba(255, 255, 255, .1);
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
 body {
-  background: var(--body-bg-color);
-  font-family: Quicksand, sans-serif;
-  font-size: 1rem;
-  color: var(--content-color);
+    background: var(--body-bg-color);
+    font-family: Quicksand, sans-serif;
+    font-size: 1rem;
+    color: var(--content-color);
 }
 
 h1 {
-  margin: 0;
-  font-weight: 300;
-  font-size: 2rem;
-  color: var(--h1-color);
+    margin: 0;
+    font-weight: 300;
+    font-size: 2rem;
+    color: var(--h1-color);
 }
 
 h1 a {
-  color:inherit;
-  text-decoration:none;
+    color: inherit;
+    text-decoration: none;
 }
 
 @media only screen and (min-width: 600px) {
-  h1 {
-    font-size: 3rem;
-  }
+    h1 {
+        font-size: 3rem;
+    }
 }
 
 h2 {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 h3 {
-  margin: 0;
-  font-size: 1rem;
+    margin: 0;
+    font-size: 1rem;
 }
 
 p {
-  margin: 0 0 10px 0;
+    margin: 0 0 10px 0;
 }
 
 /*
@@ -106,122 +106,122 @@ p {
 */
 
 .container {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .app {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
 .app__header {
-  position: relative;
-  padding: 60px 20px;
+    position: relative;
+    padding: 60px 20px;
 }
 
 
 .app__content {
-  padding: 0 20px;
-  flex: 1;
+    padding: 0 20px;
+    flex: 1;
 }
 
 .app__content[data-view='form'] .tasklist-wrapper,
 .app__content[data-view='list'] .taskform-wrapper {
-  display:none;
+    display: none;
 }
 
 .app__content[data-view='form'] .taskform-wrapper,
 .app__content[data-view='list'] .tasklist-wrapper {
-  display:block;
+    display: block;
 }
 
 .app__footer {
-  background: var(--footer-bg-color);
-  color: var(--footer-color);
-  font-size: .8em;
-  margin-top: 20px;
+    background: var(--footer-bg-color);
+    color: var(--footer-color);
+    font-size: .8em;
+    margin-top: 20px;
 }
 
 .app__footer .container {
-  padding: 10px 20px;
+    padding: 10px 20px;
 }
 
 .app__footer p:last-child {
-  margin: 0;
+    margin: 0;
 }
 
 .header__theme-button {
-  position: absolute;
-  right: 20px;
-  top: 0;
+    position: absolute;
+    right: 20px;
+    top: 0;
 }
 
 .app__action-bar {
-  margin: 0 0 20px;
+    margin: 0 0 20px;
 }
 
 .app__action-bar--second {
-  display: flex;
-  justify-content: space-between;
-  margin: 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 10px;
 }
 
 .app__sorting {
-  display: flex;
-  flex-flow: row wrap;
+    display: flex;
+    flex-flow: row wrap;
 }
 
 .app__sorting button {
-  margin: 0 5px 5px 0;
+    margin: 0 5px 5px 0;
 }
 
 .app__filter button {
-  margin: 0 0 5px 5px;
+    margin: 0 0 5px 5px;
 }
 
 .has-bg {
-  padding: 20px;
-  border-radius: var(--general-border-radius);
+    padding: 20px;
+    border-radius: var(--general-border-radius);
 }
 
 .has-bg--white {
-  background: var(--content-bg-color);
+    background: var(--content-bg-color);
 }
 
 /*
 BUTTONS
  */
 .btn {
-  border: none;
-  background: var(--btn-bg-color);
-  color: var(--btn-color);
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: 0.85rem;
-  padding: 5px 10px;
-  cursor: pointer;
-  border-radius: var(--general-border-radius);
-  transition: all 200ms ease-in;
+    border: none;
+    background: var(--btn-bg-color);
+    color: var(--btn-color);
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: var(--general-border-radius);
+    transition: all 200ms ease-in;
 }
 
 .btn--big {
-  padding: 15px 20px;
-  font-size: 1rem;
+    padding: 15px 20px;
+    font-size: 1rem;
 }
 
 .btn--sorting[data-sort-order=""] .fa-sort {
-  opacity: 0.4;
+    opacity: 0.4;
 }
 
 .btn--sorting[data-sort-order="asc"] .fa-sort:before {
-  content: '\f0de';
+    content: '\f0de';
 }
 
 .btn--sorting[data-sort-order="desc"] .fa-sort:before {
-  content: '\f0dd';
+    content: '\f0dd';
 }
 
 
@@ -229,28 +229,28 @@ BUTTONS
 .btn--sorting:focus,
 .btn--filter:hover,
 .btn--filter:focus {
-  background: var(--btn-bg-color-hover);
+    background: var(--btn-bg-color-hover);
 }
 
 .btn--filter[data-filter-active="1"] .fa-filter:before {
-  content: "\e17b";
+    content: "\e17b";
 }
 
 .btn--toggle-style {
-  background: var(--btn-togglestyle-bg-color);
-  color: var(--btn-togglestyle-color);
-  border-radius: 0 0 var(--general-border-radius) var(--general-border-radius);
+    background: var(--btn-togglestyle-bg-color);
+    color: var(--btn-togglestyle-color);
+    border-radius: 0 0 var(--general-border-radius) var(--general-border-radius);
 }
 
 .btn--toggle-style:hover,
 .btn--toggle-style:focus {
-  background: var(--btn-togglestyle-bg-color-hover);
+    background: var(--btn-togglestyle-bg-color-hover);
 }
 
 .btn.action__new,
 .btn.action__edit {
-  background: var(--btn-new-bg-color);
-  color: var(--btn-new-color);
+    background: var(--btn-new-bg-color);
+    color: var(--btn-new-color);
 }
 
 .btn.action__edit:hover,
@@ -259,8 +259,8 @@ BUTTONS
 .btn.action__new:hover,
 .btn.action__new:focus,
 .btn.action__new:active {
-  background: var(--btn-new-bg-color-hover);
-  transform: scale(1.04);
+    background: var(--btn-new-bg-color-hover);
+    transform: scale(1.04);
 }
 
 
@@ -268,106 +268,106 @@ BUTTONS
 Tasklist
  */
 .tasklist {
-  display: block;
+    display: block;
 }
 
 .entry {
-  display: grid;
-  grid-template-columns: 40px 2fr 40px;
-  grid-template-rows: auto auto auto;
-  grid-template-areas:
-    "entry__status entry__title entry__edit"
-    "entry__status entry__countdown entry__edit"
-    "entry__status entry__importance entry__edit";
-  gap: 5px;
-  grid-area: tasklist__entry;
-  background: var(--task-bg-color);
-  margin: 0 0 10px 0;
-  padding: 10px;
-  border-radius: var(--general-border-radius);
+    display: grid;
+    grid-template-columns: 40px 2fr 40px;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+        "entry__status entry__title entry__edit"
+        "entry__status entry__countdown entry__edit"
+        "entry__status entry__importance entry__edit";
+    gap: 5px;
+    grid-area: tasklist__entry;
+    background: var(--task-bg-color);
+    margin: 0 0 10px 0;
+    padding: 10px;
+    border-radius: var(--general-border-radius);
 }
 
 @media only screen and (min-width: 600px) {
-  .entry {
-    grid-template-columns: 1fr 3fr 100px 50px;
-    grid-template-rows: 1fr auto;
-    grid-template-areas:
-      "entry__status entry__title entry__importance entry__edit"
-      "entry__countdown entry__description entry__importance entry__edit";
-  }
+    .entry {
+        grid-template-columns: 1fr 3fr 100px 50px;
+        grid-template-rows: 1fr auto;
+        grid-template-areas:
+            "entry__status entry__title entry__importance entry__edit"
+            "entry__countdown entry__description entry__importance entry__edit";
+    }
 }
 
 .entry--completed {
-  background: var(--task-bg-color-completed);
+    background: var(--task-bg-color-completed);
 }
 
 .entry__edit {
-  grid-area: entry__edit;
-  justify-self: end;
-  align-self: center;
+    grid-area: entry__edit;
+    justify-self: end;
+    align-self: center;
 }
 
 .entry__countdown {
-  grid-area: entry__countdown;
-  padding-bottom: 5px;
+    grid-area: entry__countdown;
+    padding-bottom: 5px;
 }
 
 .entry__status {
-  grid-area: entry__status;
-  display:flex;
-  align-self: center;
+    grid-area: entry__status;
+    display: flex;
+    align-self: center;
 }
 
 .entry__status label {
-  display: none;
+    display: none;
 }
 
 @media only screen and (min-width: 600px) {
-  .entry__status label {
-    display: block;
-    padding-left: 10px;
-  }
+    .entry__status label {
+        display: block;
+        padding-left: 10px;
+    }
 }
 
 .entry__title {
-  grid-area: entry__title;
-  font-weight: bold;
-  padding-bottom: 5px;
+    grid-area: entry__title;
+    font-weight: bold;
+    padding-bottom: 5px;
 }
 
 .entry__description {
-  grid-area: entry__description;
-  display: none;
+    grid-area: entry__description;
+    display: none;
 }
 
 @media only screen and (min-width: 600px) {
-  .entry__description {
-    display: block;
-  }
+    .entry__description {
+        display: block;
+    }
 }
 
 .entry__description p {
-  margin: 0 0 5px;
+    margin: 0 0 5px;
 }
 
 .entry__description p:last-child {
-  margin: 0;
+    margin: 0;
 }
 
 .entry__importance {
-  grid-area: entry__importance;
-  justify-self: start;
+    grid-area: entry__importance;
+    justify-self: start;
 }
 
 @media only screen and (min-width: 600px) {
-  .entry__importance {
-    justify-self: end;
-    align-self: center;
-  }
+    .entry__importance {
+        justify-self: end;
+        align-self: center;
+    }
 }
 
 .entry__importance i {
-  margin-left: 3px;
+    margin-left: 3px;
 }
 
 /*
@@ -375,94 +375,94 @@ FORM
  */
 
 .taskform {
-  max-width: 600px;
+    max-width: 600px;
 }
 
 .form-row {
-  display: flex;
-  flex-flow: column;
-  justify-content: flex-end;
-  padding: 0 0 15px;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+    padding: 0 0 15px;
 }
 
 @media only screen and (min-width: 600px) {
-  .form-row {
-    flex-flow: row;
-  }
+    .form-row {
+        flex-flow: row;
+    }
 }
 
 .form-row > label {
-  padding: 0.5em 1em 0.5em 0;
-  flex: 1;
+    padding: 0.5em 1em 0.5em 0;
+    flex: 1;
 }
 
 .form-row__input {
-  flex: 2;
+    flex: 2;
 }
 
 .taskform input:not([type="checkbox"],[type="radio"]),
 .taskform textarea {
-  padding: 10px;
-  width: 100%;
-  max-width: 500px;
-  background: var(--input-bg-color);
-  color: var(--input-color);
-  border: 1px solid var(--input-border-color);
+    padding: 10px;
+    width: 100%;
+    max-width: 500px;
+    background: var(--input-bg-color);
+    color: var(--input-color);
+    border: 1px solid var(--input-border-color);
 }
 
 .taskform input:not([type="checkbox"],[type="radio"]):invalid {
-  border: 2px solid var(--invalid-input-border-color);
+    border: 2px solid var(--invalid-input-border-color);
 }
 
 .taskform textarea {
-  min-height: 100px;
+    min-height: 100px;
 }
 
 .form-row__input--checkbox,
 .form-row__input--radio {
-  display: flex;
+    display: flex;
 }
 
 input[type="checkbox"],
-input[type="radio"]{
-  width: 1.2rem;
-  height: 1.2rem;
-  accent-color: var(--input-accent-color);
-  margin-right:10px;
+input[type="radio"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: var(--input-accent-color);
+    margin-right: 10px;
 }
 
 .task-importance {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .task-importance input[type="number"] {
-  width: 65px;
-  margin-left: 20px;
+    width: 65px;
+    margin-left: 20px;
 }
 
 .task-importance input[type="range"] {
-  accent-color: var(--input-accent-color);
+    accent-color: var(--input-accent-color);
 }
 
 .form-row__input--checkbox {
-  padding: 10px 0;
+    padding: 10px 0;
 }
 
 .form-action-row .btn-wrapper {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-end;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
 }
 
 .form-action-row .btn {
-  background: var(--btn-new-bg-color);
-  color: var(--btn-new-color);
-  margin: 0 0 10px 10px;
-  padding: 5px 10px;
-  font-size: 1rem;
+    background: var(--btn-new-bg-color);
+    color: var(--btn-new-color);
+    margin: 0 0 10px 10px;
+    padding: 5px 10px;
+    font-size: 1rem;
 }
 
 .form-action-row .btn:first-child {
-  margin-left: 0;
+    margin-left: 0;
 }

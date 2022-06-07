@@ -1,7 +1,10 @@
-import {taskService} from "../services/task-service.js";
+import {Utils} from "../utils.js";
 import {Task} from "../services/task.js";
+import {taskService} from "../services/task-service.js";
+import {initHandlebarHelpers} from "./handlebars-helper.js";
 
 export class TaskController {
+
     constructor() {
         this.viewButtons = document.querySelectorAll('button[data-view]');
         this.sortButtons = document.querySelectorAll('button[data-sort-by]');
@@ -20,51 +23,12 @@ export class TaskController {
         this.sortOrder = this.sortOrderDefaults;
         this.filterBy = this.filterByDefaults;
 
+        // eslint-disable-next-line no-undef
         this.taskListTemplateCompiled = Handlebars.compile(document.getElementById('tasklist-template').innerHTML);
     }
 
-    initHandlebarHelpers() {
-
-        Handlebars.registerHelper('truncString', (string) => {
-            const points = string.length > 150 ? '...' : '';
-            const truncateString = string.substring(0, 150) + points;
-            return new Handlebars.SafeString(truncateString)
-        });
-
-        Handlebars.registerHelper('showImportanceSymbol', (number, iconHtml) => {
-            let symbols = ``;
-            for (let i = 0; i < number; i++) {
-                symbols += iconHtml
-            }
-            return new Handlebars.SafeString(symbols);
-        });
-
-        Handlebars.registerHelper('remainingDays',  (dueDate) => {
-            const today = new Date();
-            const remainingTimestamp = dueDate - today.getTime();
-            const remainingDays = Math.ceil(remainingTimestamp / (1000 * 60 * 60 * 24));
-
-            switch (true) {
-                case (remainingDays > 1):
-                    return `in ${remainingDays} Tagen`
-
-                case (remainingDays === 1):
-                    return `in ${remainingDays} Tag`
-
-                case (remainingDays === -1):
-                    return `vor ${Math.abs(remainingDays)} Tag`
-
-                case (remainingDays < -1):
-                    return `vor ${Math.abs(remainingDays)} Tagen`
-
-                default:
-                    return `heute`
-            }
-        });
-    }
-
     loadTheme() {
-        if (taskService.getCookie('theme')) {
+        if (Utils.getCookie('theme')) {
             this.bodyHTML.classList.add('dark-mode');
         }
     }
@@ -75,9 +39,9 @@ export class TaskController {
         this.styleSwitchBtn.addEventListener('click', () => {
             this.bodyHTML.classList.toggle('dark-mode');
             if (this.bodyHTML.classList.contains('dark-mode')) {
-                taskService.setCookie('theme', 'dark-mode', 60);
+                Utils.setCookie('theme', 'dark-mode', 60);
             } else {
-                taskService.deleteCookie('theme');
+                Utils.deleteCookie('theme');
             }
         });
 
@@ -107,13 +71,16 @@ export class TaskController {
 
         /* Sort List */
         this.sortButtons.forEach(el => el.addEventListener('click', event => {
-            event.preventDefault();
+            const e = event;
+
+            e.preventDefault();
 
             const sortButton = event.target.closest('button');
             const sortOrder = sortButton.dataset.sortOrder;
 
 
             this.sortButtons.forEach(element => {
+                // eslint-disable-next-line no-param-reassign
                 element.dataset.sortOrder = '';
             });
 
@@ -136,13 +103,15 @@ export class TaskController {
                     this.sortBy = this.sortByDefaults;
                     this.sortOrder = this.sortOrderDefaults;
                     this.renderList();
-                    event.target.dataset.sortOrder = '';
+                    e.target.dataset.sortOrder = '';
                     break;
             }
         }))
 
         /* Filter List */
-        this.filterButtons.forEach(el => el.addEventListener('click', event => {
+        this.filterButtons.forEach(el => el.addEventListener('click', e => {
+
+            const event = e;
 
             if (+(event.target.dataset.filterActive) === 0) {
                 event.target.dataset.filterActive = '1';
@@ -175,7 +144,8 @@ export class TaskController {
         });
 
         /* Range/Input */
-        this.taskform.querySelectorAll('.js-range-input').forEach(el => el.addEventListener('change', event => {
+        this.taskform.querySelectorAll('.js-range-input').forEach(el => el.addEventListener('change', e => {
+            const event = e;
             if (event.target.nextElementSibling) event.target.nextElementSibling.value = event.target.value;
             if (event.target.previousElementSibling) event.target.previousElementSibling.value = event.target.value;
         }));
@@ -239,7 +209,7 @@ export class TaskController {
     initialize() {
         taskService.loadData();
         this.loadTheme();
-        this.initHandlebarHelpers();
+        initHandlebarHelpers();
         this.initEventHandlers();
         this.renderList();
     }

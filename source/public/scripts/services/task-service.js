@@ -11,7 +11,9 @@ export class TaskService {
                 'desc': (a, b) => b - a
             },
             'string': {
+                // eslint-disable-next-line no-nested-ternary
                 'asc': (a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : a.toLowerCase() < b.toLowerCase() ? -1 : 0,
+                // eslint-disable-next-line no-nested-ternary
                 'desc': (a, b) => b.toLowerCase() > a.toLowerCase() ? 1 : b.toLowerCase() < a.toLowerCase() ? -1 : 0
             }
         }
@@ -47,9 +49,10 @@ export class TaskService {
 
         if (!filterBy) {
             return sortedList;
-        } else {
-            return sortedList.filter(elem => elem[filterBy] === false);
         }
+
+        return sortedList.filter(elem => elem[filterBy] === false);
+
     }
 
 
@@ -60,32 +63,7 @@ export class TaskService {
         return newId;
     }
 
-    setCookie(cookieName, cookieValue, expiration) {
-        const today = new Date();
-        today.setTime(today.getTime() + (expiration * 24 * 60 * 60 * 1000));
-        const expires = `expires=${today.toUTCString()}`;
-        document.cookie = `${cookieName}=${cookieValue};${expires};path=/`;
-    }
 
-    getCookie(cookieName) {
-        const name = `${cookieName}=`;
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    deleteCookie(cookieName) {
-        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    }
 
 }
 
