@@ -1,8 +1,8 @@
-export function initHandlebarHelpers () {
-
+export function handlebarsHelper() {
     Handlebars.registerHelper('truncString', (string) => {
-        const points = string.length > 150 ? '...' : '';
-        const truncateString = string.substring(0, 150) + points;
+        const str = string ? string : '';
+        const points = str.length > 150 ? '...' : '';
+        const truncateString = str.substring(0, 150) + points;
         return new Handlebars.SafeString(truncateString)
     });
 
@@ -14,7 +14,7 @@ export function initHandlebarHelpers () {
         return new Handlebars.SafeString(symbols);
     });
 
-    Handlebars.registerHelper('remainingDays',  (dueDate) => {
+    Handlebars.registerHelper('remainingDays', (dueDate) => {
         const today = new Date();
         const remainingTimestamp = dueDate - today.getTime();
         const remainingDays = Math.ceil(remainingTimestamp / (1000 * 60 * 60 * 24));
@@ -36,4 +36,5 @@ export function initHandlebarHelpers () {
                 return `heute`
         }
     });
+
 }

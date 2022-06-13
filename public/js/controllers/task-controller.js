@@ -1,7 +1,7 @@
-import {Utils} from "../utils.js";
-import {Task} from "../services/task.js";
 import {taskService} from "../services/task-service.js";
-import {initHandlebarHelpers} from "./handlebars-helper.js";
+import {CookieHelper} from "../utils/cookie-helper.js";
+import {handlebarsHelper} from "../utils/handlebars-helper.js";
+import {Task} from "../services/task.js";
 
 export class TaskController {
 
@@ -27,21 +27,21 @@ export class TaskController {
         this.taskListTemplateCompiled = Handlebars.compile(document.getElementById('tasklist-template').innerHTML);
     }
 
-    loadTheme() {
-        if (Utils.getCookie('theme')) {
+    async loadTheme() {
+        if (CookieHelper.getCookie('theme')) {
             this.bodyHTML.classList.add('dark-mode');
         }
     }
 
-    initEventHandlers() {
+    async initEventHandlers() {
 
         /* Style Switch */
         this.styleSwitchBtn.addEventListener('click', () => {
             this.bodyHTML.classList.toggle('dark-mode');
             if (this.bodyHTML.classList.contains('dark-mode')) {
-                Utils.setCookie('theme', 'dark-mode', 60);
+                CookieHelper.setCookie('theme', 'dark-mode', 60);
             } else {
-                Utils.deleteCookie('theme');
+                CookieHelper.deleteCookie('theme');
             }
         });
 
@@ -70,7 +70,7 @@ export class TaskController {
 
 
         /* Sort List */
-        this.sortButtons.forEach(el => el.addEventListener('click', event => {
+        this.sortButtons.forEach(el => el.addEventListener('click', async function (event) {
             const e = event;
 
             e.preventDefault();
@@ -89,38 +89,38 @@ export class TaskController {
                     sortButton.dataset.sortOrder = 'asc';
                     this.sortBy = sortButton.dataset.sortBy;
                     this.sortOrder = 'asc';
-                    this.renderList();
+                    await this.renderList();
 
                     break;
                 case 'asc':
                     sortButton.dataset.sortOrder = 'desc';
                     this.sortBy = sortButton.dataset.sortBy;
                     this.sortOrder = 'desc';
-                    this.renderList();
+                    await this.renderList();
                     break;
 
                 default:
                     this.sortBy = this.sortByDefaults;
                     this.sortOrder = this.sortOrderDefaults;
-                    this.renderList();
+                    await this.renderList();
                     e.target.dataset.sortOrder = '';
                     break;
             }
         }))
 
         /* Filter List */
-        this.filterButtons.forEach(el => el.addEventListener('click', e => {
+        this.filterButtons.forEach(el => el.addEventListener('click', async function (e) {
 
             const event = e;
 
             if (+(event.target.dataset.filterActive) === 0) {
                 event.target.dataset.filterActive = '1';
                 this.filterBy = event.target.dataset.filter;
-                this.renderList();
+                await this.renderList();
             } else {
                 event.target.dataset.filterActive = '0';
                 this.filterBy = '';
-                this.renderList();
+                await this.renderList();
             }
 
         }))
@@ -166,13 +166,15 @@ export class TaskController {
         formData.taskCompleted.checked = data.completed;
     }
 
-    createNewTask(event) {
+    async createNewTask(event) {
+
         const formData = this.taskform.elements;
         const creationDateTS = new Date().getTime(); // timestamp
-        const taskId = formData.taskId.value ? formData.taskId.value : taskService.createId();
+        const taskId = formData.taskId.value ? formData.taskId.value : await taskService.createId();
         const taskEntry = new Task(taskId, formData.taskTitle.value, creationDateTS, formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.valueAsNumber, formData.taskCompleted.checked);
-        taskService.addTask(taskEntry);
-        this.renderList();
+
+        await taskService.addTask(taskEntry);
+        await this.renderList();
 
         if (event.submitter.classList.contains('action__update')) {
             formData.taskId.value = taskId;
@@ -182,37 +184,40 @@ export class TaskController {
 
     }
 
-    editTask() {
+    async editTask() {
         const formData = this.taskform.elements;
-        const taskEntry = new Task(formData.taskId.value, formData.taskTitle.value, +(formData.taskCreationDate.value), formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.valueAsNumber, formData.taskCompleted.checked);
-        taskService.updateTask(taskEntry);
-        this.renderList();
+        const task = new Task(formData.taskId.value, formData.taskTitle.value, +(formData.taskCreationDate.value), formData.taskDescription.value, formData.taskImportanceInput.value, formData.taskDueDate.valueAsNumber, formData.taskCompleted.checked);
+        await taskService.updateTask(task);
+        await this.renderList();
     }
 
 
-    renderList() {
-        const data = taskService.getNote(this.sortBy, this.sortOrder, this.filterBy);
+    async renderList() {
+        const data = await taskService.getAll();
+        //const data = taskService.getNote(this.sortBy, this.sortOrder, this.filterBy);
         this.tasklist.innerHTML = this.taskListTemplateCompiled(data);
     }
 
-    clearForm() {
+    async clearForm() {
         this.taskform.reset();
         this.taskform.dataset.action = '';
         this.taskform.querySelector('input#task-id').value = '';
     }
 
-    changeView(view) {
+    async changeView(view) {
         this.appContent.dataset.view = view;
-        this.clearForm();
+        await this.clearForm();
     }
 
     initialize() {
-        taskService.loadData();
         this.loadTheme();
-        initHandlebarHelpers();
+        handlebarsHelper();
         this.initEventHandlers();
         this.renderList();
+
     }
 
 
 }
+
+export const taskController = new TaskController();

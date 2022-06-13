@@ -1,10 +1,11 @@
-import {TaskStorage} from './data/task-storage.js';
-import {Task} from './task.js';
+import {httpService} from "./http-service.js";
+
 
 export class TaskService {
-    constructor(storage) {
-        this.storage = storage || new TaskStorage();
-        this.items = [];
+    constructor() {
+        //this.storage = storage || new TaskStorage();
+        //this.items = [];
+        /*
         this.sortType = {
             'number': {
                 'asc': (a, b) => a - b,
@@ -16,34 +17,33 @@ export class TaskService {
                 // eslint-disable-next-line no-nested-ternary
                 'desc': (a, b) => b.toLowerCase() > a.toLowerCase() ? 1 : b.toLowerCase() < a.toLowerCase() ? -1 : 0
             }
-        }
+        }*/
     }
 
-    loadData() {
-        this.items = this.storage.getAll().map(item => new Task(item.id, item.title, item.creationDate, item.description, item.importance, item.dueDate, item.completed));
+
+    async addTask(task) {
+        return httpService.ajax("POST", "/tasks/", task);
     }
 
-    save() {
-        this.storage.update(this.items.map(item => item.toJSON()));
-    }
-
-    addTask(task) {
-        this.items.push(task);
-        this.save();
-    }
-
-    updateTask(task) {
+    async updateTask(task) {
+        /*
         const index = this.items.findIndex((el) => el.id === task.id);
         this.items[index] = task;
         this.save();
+         */
+        return httpService.ajax("PUT", `/tasks/${task.id}`);
+
     }
 
-    getTaskById(id) {
-        return this.items.find(el => el.id === id);
+    async getTaskById(id) {
+        return httpService.ajax("GET", `/tasks/${id}`);
     }
 
-    getNote(sortBy, sortOrder, filterBy) {
+    //async getAll(sortBy, sortOrder, filterBy) {
+    async getAll() {
+        return httpService.ajax("GET", "/tasks", undefined);
 
+        /*
         const sortFn = this.sortType[typeof (this.items[0][sortBy])][sortOrder];
         const sortedList =  [...this.items].sort((a, b) => sortFn(a[sortBy], b[sortBy]));
 
@@ -52,16 +52,21 @@ export class TaskService {
         }
 
         return sortedList.filter(elem => elem[filterBy] === false);
+        */
 
     }
 
-
-    createId() {
-        const itemLength = this.items.length ? this.items.length : 0;
-        const newId = (Math.floor(Math.random() * 100000).toString().slice(0, 3)) + (itemLength + 1);
-        if (this.items.find(el => el.id === newId)) this.createId();
+    async createId() {
+        const allTasks = await this.getAll();
+        const itemLength = allTasks.length || 0;
+        const newId = (Math.floor(Math.random() * 100000).toString().slice(0, 3) + (itemLength + 1));
+        if (await this.getTaskById(newId)) this.createId();
         return newId;
     }
+
+
+
+
 
 
 

@@ -21,4 +21,5 @@ export class Task {
             completed : this.completed
         };
     }
+
 }

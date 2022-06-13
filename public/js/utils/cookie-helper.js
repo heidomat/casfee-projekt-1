@@ -1,4 +1,4 @@
-export class Utils {
+export class CookieHelper {
     static setCookie(cookieName, cookieValue, expiration) {
         const today = new Date();
         today.setTime(today.getTime() + (expiration * 24 * 60 * 60 * 1000));
