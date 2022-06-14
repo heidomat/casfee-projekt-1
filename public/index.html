@@ -17,7 +17,7 @@
 
     <script id="tasklist-template" type="text/x-handlebars-template">
         {{#each this}}
-            <div class="tasklist__entry entry{{#if completed}} entry--completed{{/if}}" data-id="{{id}}">
+            <div class="tasklist__entry entry{{#if completed}} entry--completed{{/if}}" data-id="{{_id}}">
                 <div class="entry__status">
                     <input type="checkbox" name="entryStatus" id="entry-status-1" disabled{{#if completed}} checked{{/if}} />
                     <label for="entry-status-1">{{#if completed}}erledigt{{else}}offen{{/if}}</label>
@@ -44,7 +44,7 @@
 
                 <div class="entry__edit">
                     <button type="button" class="edit-task btn btn--action action__edit" title="bearbeiten"
-                            data-id="{{id}}" data-action="edit">
+                            data-id="{{_id}}" data-action="edit">
                         <i class="fa fa-pen"></i>
                     </button>
                 </div>
@@ -80,10 +80,10 @@
                     <button type="button" class="btn btn--sorting" data-sort-by="title" data-sort-order="">
                         Name <i class="fa fa-sort"></i>
                     </button>
-                    <button type="button" class="btn btn--sorting" data-sort-by="dueDate" data-sort-order="">
+                    <button type="button" class="btn btn--sorting" data-sort-by="dueDate" data-sort-order="1">
                         Fällig am <i class="fa fa-sort"></i>
                     </button>
-                    <button type="button" class="btn btn--sorting" data-sort-by="creationDate" data-sort-order="asc">
+                    <button type="button" class="btn btn--sorting" data-sort-by="creationDate" data-sort-order="">
                         Erstellt am <i class="fa fa-sort"></i>
                     </button>
                     <button type="button" class="btn btn--sorting" data-sort-by="importance" data-sort-order="">
@@ -155,6 +155,9 @@
                             </button>
                             <button type="reset" class="btn btn--action action__overview" data-view="list">zur
                                 Übersicht <i class="fa fa-list"></i></button>
+                        </div>
+                        <div class="btn-wrapper btn-wrapper--delete">
+                            <button type="button" class="btn btn--action action__delete">Löschen <i class="fa fa-trash"></i></button>
                         </div>
                     </div>
 

@@ -216,11 +216,11 @@ BUTTONS
     opacity: 0.4;
 }
 
-.btn--sorting[data-sort-order="asc"] .fa-sort:before {
+.btn--sorting[data-sort-order="1"] .fa-sort:before {
     content: '\f0de';
 }
 
-.btn--sorting[data-sort-order="desc"] .fa-sort:before {
+.btn--sorting[data-sort-order="-1"] .fa-sort:before {
     content: '\f0dd';
 }
 
@@ -411,7 +411,7 @@ FORM
 }
 
 .taskform input:not([type="checkbox"],[type="radio"]):invalid {
-    border: 2px solid var(--invalid-input-border-color);
+    border-color: var(--invalid-input-border-color);
 }
 
 .taskform textarea {
@@ -453,6 +453,10 @@ input[type="radio"] {
     display: flex;
     flex-flow: row wrap;
     justify-content: flex-end;
+}
+
+form[data-action='new'] .form-action-row .btn-wrapper--delete {
+    display:none;
 }
 
 .form-action-row .btn {

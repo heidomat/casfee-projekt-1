@@ -1,22 +1,33 @@
-import {taskStore} from '../services/task-store.js'
+import {dataStore} from '../services/data-store.js'
 
 export class DataController {
 
-    async getTasks (req, res) {
-        res.json((await taskStore.all()));
+    async getTasks(req, res) {
+        res.json((await dataStore.all(req.query.sortBy, req.query.sortOrder, req.query.filterBy)));
     }
 
-    addTask = async (req, res) => {
-        res.json((await taskStore.add(req.body)));
+    async addTask(req, res) {
+        res.json((await dataStore.add(req.body)));
     }
 
-    getTaskById = async (req, res) => {
-        res.json((await taskStore.getById(req.params.id)));
+    async deleteTask(req, res) {
+        res.json((await dataStore.delete(req.params.id)));
     }
 
+    async getTaskById(req, res) {
+        res.json((await dataStore.getById(req.params.id)));
+    }
+
+    async update(req, res) {
+        res.json((await dataStore.update(req.params.id, req.body)));
+    }
+
+    /*
+    // wieso geht diese schreibweise nicht? ESLINT
     update = async (req, res) => {
-        res.json((await taskStore.update(req.params.id)));
+        res.json((await taskStore.update(req.params.id, req.body)));
     }
+     */
 }
 
 export const dataController = new DataController();
