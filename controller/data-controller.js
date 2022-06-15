@@ -22,12 +22,6 @@ export class DataController {
         res.json((await dataStore.update(req.params.id, req.body)));
     }
 
-    /*
-    // wieso geht diese schreibweise nicht? ESLINT
-    update = async (req, res) => {
-        res.json((await taskStore.update(req.params.id, req.body)));
-    }
-     */
 }
 
 export const dataController = new DataController();
