@@ -7,15 +7,15 @@ GENERAL
     --content-bg-color: #fff;
     --content-color: #46403c;
     --task-bg-color: #fff;
-    --task-bg-color-completed: rgba(255, 255, 255, .7);
-    --btn-bg-color: rgba(255, 255, 255, .3);
-    --btn-bg-color-hover: rgba(255, 255, 255, .5);
+    --task-bg-color-completed: rgb(255 255 255 / 70%);
+    --btn-bg-color: rgb(255 255 255 / 30%);
+    --btn-bg-color-hover: rgb(255 255 255 / 50%);
     --btn-color: #fff;
     --btn-new-bg-color: #46403c;
     --btn-new-bg-color-hover: #2d2a27;
     --btn-new-color: #fff;
     --btn-togglestyle-bg-color: #646929;
-    --btn-togglestyle-bg-color-hover: rgba(100, 105, 41, 0.71);
+    --btn-togglestyle-bg-color-hover: rgb(100 105 41 / 71%);
     --btn-togglestyle-color: #fff;
     --input-border-color: #59524c;
     --invalid-input-border-color: #c90b0b;
@@ -25,33 +25,33 @@ GENERAL
     --h1-color: #fff;
     --general-border-radius: 3px;
     --footer-color: #fff;
-    --footer-bg-color: rgba(0, 0, 0, .1);
+    --footer-bg-color: rgb(0 0 0 / 10%);
 }
 
 .dark-mode {
     --body-bg-color: #0d0d0d;
-    --content-bg-color: rgba(255, 255, 255, .2);
+    --content-bg-color: rgb(255 255 255 / 20%);
     --content-color: #fff;
-    --task-bg-color: rgba(255, 255, 255, .2);
-    --task-bg-color-completed: rgba(255, 255, 255, .1);
-    --btn-bg-color: rgba(255, 255, 255, .4);
-    --btn-bg-color-hover: rgba(255, 255, 255, .6);
+    --task-bg-color: rgb(255 255 255 / 20%);
+    --task-bg-color-completed: rgb(255 255 255 / 10%);
+    --btn-bg-color: rgb(255 255 255 / 40%);
+    --btn-bg-color-hover: rgb(255 255 255 / 60%);
     --btn-color: #fff;
     --btn-new-bg-color: #5786c0;
     --btn-new-bg-color-hover: #3a6396;
     --btn-new-color: #fff;
     --btn-togglestyle-bg-color: #404040;
-    --btn-togglestyle-bg-color-hover: rgba(64, 64, 64, 0.71);
+    --btn-togglestyle-bg-color-hover: rgb(64 64 64 / 71%);
     --btn-togglestyle-color: #fff;
-    --input-border-color: rgba(255, 255, 255, .2);
+    --input-border-color: rgb(255 255 255 / 20%);
     --invalid-input-border-color: #c90b0b;
-    --input-bg-color: rgba(255, 255, 255, .2);
+    --input-bg-color: rgb(255 255 255 / 20%);
     --input-color: #fff;
     --input-accent-color: #5786c0;
     --h1-color: #fff;
     --general-border-radius: 3px;
     --footer-color: #fff;
-    --footer-bg-color: rgba(255, 255, 255, .1);
+    --footer-bg-color: rgb(255 255 255 / 10%);
 }
 
 * {
@@ -98,7 +98,7 @@ h3 {
 }
 
 p {
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
 }
 
 /*
@@ -122,26 +122,25 @@ p {
     padding: 60px 20px;
 }
 
-
 .app__content {
     padding: 0 20px;
     flex: 1;
 }
 
-.app__content[data-view='form'] .tasklist-wrapper,
-.app__content[data-view='list'] .taskform-wrapper {
+.app__content[data-view="form"] .tasklist-wrapper,
+.app__content[data-view="list"] .taskform-wrapper {
     display: none;
 }
 
-.app__content[data-view='form'] .taskform-wrapper,
-.app__content[data-view='list'] .tasklist-wrapper {
+.app__content[data-view="form"] .taskform-wrapper,
+.app__content[data-view="list"] .tasklist-wrapper {
     display: block;
 }
 
 .app__footer {
     background: var(--footer-bg-color);
     color: var(--footer-color);
-    font-size: .8em;
+    font-size: 0.8em;
     margin-top: 20px;
 }
 
@@ -216,14 +215,13 @@ BUTTONS
     opacity: 0.4;
 }
 
-.btn--sorting[data-sort-order="1"] .fa-sort:before {
-    content: '\f0de';
+.btn--sorting[data-sort-order="1"] .fa-sort::before {
+    content: "\f0de";
 }
 
-.btn--sorting[data-sort-order="-1"] .fa-sort:before {
-    content: '\f0dd';
+.btn--sorting[data-sort-order="-1"] .fa-sort::before {
+    content: "\f0dd";
 }
-
 
 .btn--sorting:hover,
 .btn--sorting:focus,
@@ -232,7 +230,7 @@ BUTTONS
     background: var(--btn-bg-color-hover);
 }
 
-.btn--filter[data-filter-active="1"] .fa-filter:before {
+.btn--filter[data-filter-active="1"] .fa-filter::before {
     content: "\e17b";
 }
 
@@ -263,7 +261,6 @@ BUTTONS
     transform: scale(1.04);
 }
 
-
 /*
 Tasklist
  */
@@ -273,27 +270,25 @@ Tasklist
 
 .entry {
     display: grid;
-    grid-template-columns: 40px 2fr 40px;
-    grid-template-rows: auto auto auto;
-    grid-template-areas:
-        "entry__status entry__title entry__edit"
-        "entry__status entry__countdown entry__edit"
-        "entry__status entry__importance entry__edit";
+    grid-template:
+        "entry__status entry__title entry__edit" auto
+        "entry__status entry__countdown entry__edit" auto
+        "entry__status entry__importance entry__edit" auto
+        / 40px 2fr 40px;
     gap: 5px;
     grid-area: tasklist__entry;
     background: var(--task-bg-color);
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
     padding: 10px;
     border-radius: var(--general-border-radius);
 }
 
 @media only screen and (min-width: 600px) {
     .entry {
-        grid-template-columns: 1fr 3fr 100px 50px;
-        grid-template-rows: 1fr auto;
-        grid-template-areas:
-            "entry__status entry__title entry__importance entry__edit"
-            "entry__countdown entry__description entry__importance entry__edit";
+        grid-template:
+            "entry__status entry__title entry__importance entry__edit" 1fr
+            "entry__countdown entry__description entry__importance entry__edit"  auto
+            / 1fr 3fr 100px 50px;
     }
 }
 
@@ -455,8 +450,8 @@ input[type="radio"] {
     justify-content: flex-end;
 }
 
-form[data-action='new'] .form-action-row .btn-wrapper--delete {
-    display:none;
+form[data-action="new"] .form-action-row .btn-wrapper--delete {
+    display: none;
 }
 
 .form-action-row .btn {

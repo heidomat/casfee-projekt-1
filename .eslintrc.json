@@ -20,6 +20,7 @@
     "object-curly-spacing": "off",
     "linebreak-style": "off",
     "import/prefer-default-export": 0,
+    "func-names": "off",
     "prefer-destructuring": ["error", {"object": false, "array": false}]
 
   }

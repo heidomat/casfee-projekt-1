@@ -48,10 +48,10 @@ export class TaskController {
 
 
         /* Change View (Form or List) */
-        this.viewButtons.forEach(el => el.addEventListener('click', event => {
+        this.viewButtons.forEach(el => el.addEventListener('click', async event => {
             event.preventDefault();
             const view = event.target.closest('button').dataset.view;
-            this.changeView(view);
+            await this.changeView(view);
 
             if (event.target.closest('button').dataset.action === 'new') {
                 this.taskform.dataset.action = 'new';
@@ -59,32 +59,29 @@ export class TaskController {
         }));
 
         /* Edit Button */
-        this.tasklist.addEventListener("click", async function (event) {
+        this.tasklist.addEventListener('click', async event => {
             const editButton = event.target.closest('button[data-action="edit"]');
             if (editButton) {
                 const taskId = editButton.dataset.id;
                 await this.changeView('form');
                 this.taskform.dataset.action = 'edit';
-                await taskController.loadEditForm(await taskService.getTaskById(taskId));
+                await this.loadEditForm(await taskService.getTaskById(taskId));
             }
-        }.bind(this));
+        });
 
 
         /* Sort List */
-        this.sortButtons.forEach(el => el.addEventListener('click', async function (event) {
+        this.sortButtons.forEach(el => el.addEventListener('click', async event => {
             const e = event;
-
             e.preventDefault();
 
             const sortButton = event.target.closest('button');
             const sortOrder = sortButton.dataset.sortOrder;
 
-
             this.sortButtons.forEach(element => {
                 // eslint-disable-next-line no-param-reassign
                 element.dataset.sortOrder = '';
             });
-
 
             switch (sortOrder) {
                 case '':
@@ -92,8 +89,8 @@ export class TaskController {
                     this.sortBy = sortButton.dataset.sortBy;
                     this.sortOrder = '-1';
                     await this.renderList();
-
                     break;
+
                 case '-1':
                     sortButton.dataset.sortOrder = '1';
                     this.sortBy = sortButton.dataset.sortBy;
@@ -108,13 +105,12 @@ export class TaskController {
                     e.target.dataset.sortOrder = '';
                     break;
             }
-        }.bind(this)));
+        }));
 
         /* Filter List */
-        this.filterButtons.forEach(el => el.addEventListener('click', async function (e) {
-
+        // eslint-disable-next-line prefer-arrow-callback
+        this.filterButtons.forEach(el => el.addEventListener('click', async e => {
             const event = e;
-
             if (+(event.target.dataset.filterActive) === 0) {
                 event.target.dataset.filterActive = '1';
                 this.filterBy = event.target.dataset.filter;
@@ -124,28 +120,29 @@ export class TaskController {
                 this.filterBy = '';
                 await this.renderList();
             }
-
-        }.bind(this)))
+        }));
 
         /* Submit Form */
-        this.taskform.addEventListener("submit", (event) => {
+        this.taskform.addEventListener("submit", async event => {
 
             event.preventDefault();
 
             if (this.taskform.dataset.action === 'edit') {
-                this.editTask();
+                await this.editTask();
             } else if (this.taskform.dataset.action === 'new') {
-                this.createNewTask(event);
+                await this.createNewTask(event);
             }
 
             if (event.submitter.classList.contains('action__update-overview')) {
-                this.changeView('list');
+                await this.changeView('list');
             }
+
         });
 
         /* Delete */
-        this.deleteButton.addEventListener('click', async (event) => {
+        this.deleteButton.addEventListener('click', async event => {
             event.preventDefault();
+            // eslint-disable-next-line no-restricted-globals,no-alert
             if (confirm('Aufgabe wirklich löschen?')) {
                 await taskService.deleteTask(this.taskform.elements.taskId.value);
                 await this.renderList();
@@ -165,8 +162,8 @@ export class TaskController {
 
 
     async loadEditForm(data) {
-        // fill data of existing task in form
         const formData = this.taskform.elements;
+        // eslint-disable-next-line no-underscore-dangle
         formData.taskId.value = data._id;
         formData.taskCreationDate.value = data.creationDate;
         formData.taskTitle.value = data.title;
@@ -190,7 +187,6 @@ export class TaskController {
             formData.taskCreationDate.value = creationDateTS;
             this.taskform.dataset.action = 'edit';
         }
-
     }
 
     async editTask() {
@@ -203,7 +199,11 @@ export class TaskController {
 
     async renderList() {
         const data = await taskService.getAll(this.sortBy, this.sortOrder, this.filterBy);
-        this.tasklist.innerHTML = this.taskListTemplateCompiled(data);
+        if (data.length > 0) {
+            this.tasklist.innerHTML = this.taskListTemplateCompiled(data);
+        } else {
+            this.tasklist.innerHTML = `<p>Noch keine Notizen erfasst</p>`
+        }
     }
 
     async clearForm() {

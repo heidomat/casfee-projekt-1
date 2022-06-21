@@ -6,12 +6,12 @@ const app = express();
 const hostname = '127.0.0.1';
 const port = 8000;
 
-function notFound(req, res, next) {
+function notFound(req, res) {
     res.setHeader("Content-Type", 'text/html');
     res.status(404).send("404 - SEITE NICHT GEFUNDEN");
 }
 
-function errorHandler(err, req, res, next) {
+function errorHandler(err, req, res) {
     res.status(500).end(err.message);
 }
 

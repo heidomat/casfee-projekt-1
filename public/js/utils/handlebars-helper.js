@@ -1,6 +1,8 @@
+/* eslint no-undef:0 */
+
 export function handlebarsHelper() {
     Handlebars.registerHelper('truncString', (string) => {
-        const str = string ? string : '';
+        const str = string || '';
         const points = str.length > 150 ? '...' : '';
         const truncateString = str.substring(0, 150) + points;
         return new Handlebars.SafeString(truncateString)

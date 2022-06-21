@@ -1,3 +1,4 @@
+/* eslint class-methods-use-this:0 */
 import {dataStore} from '../services/data-store.js'
 
 export class DataController {
