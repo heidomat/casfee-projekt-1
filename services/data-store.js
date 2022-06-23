@@ -10,7 +10,7 @@ export class DataStorage {
     }
 
     async delete(id) {
-        return this.db.remove({_id: id});
+        return this.db.remove({_id: id}, {});
     }
 
     async all(sortBy, sortOrder, filterBy) {
